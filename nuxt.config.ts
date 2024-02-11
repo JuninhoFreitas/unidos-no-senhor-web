@@ -17,5 +17,5 @@ export default defineNuxtConfig({
       baseUrl: process.env.BASE_URL || "localhost:3003",
     }
   }
-  // ssr: false
+  ssr: false
 });
