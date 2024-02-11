@@ -1,34 +1,59 @@
 <script setup>
+import { useDebounce } from '@vueuse/core';
 const config = useRuntimeConfig();
-import axios from 'axios';
 
 definePageMeta({
   layout: 'landing',
 });
 
-// let bibliotecaMock = [
-//   {
-//     id: '930a8081-ec8d-4006-9000-6a2df2483904',
-//     titulo: 'Cartas de um diabo para seu Aprendiz',
-//     autor: 'C.S. Lewis',
-//     editora: 'Thomas Nelson Brasil',
-//     isbn: '9788578606264',
-//     anoDeImpressao: 1942,
-//     observacao: 'Livro muito bom, recomendo a leitura',
-//   },
-// ];
-const { data: books, pending, error } = useAsyncData(
-  'books',
-  () => $fetch(`${config.public.baseUrl}/biblioteca`),
-)
-// axios
-//   .request(options)
-//   .then(function (response) {
-//     biblioteca.value = response.data;
-//   })
-//   .catch(function (error) {
-//     console.error(error);
-//   });
+const { data: books, pending, error } = useAsyncData('books', () => $fetch(`${config.public.baseUrl}/biblioteca`));
+
+const search = ref('');
+const cachedBooks = [];
+const debouncedSearch = useDebounce(search, 500);
+
+const cleanObject = (obj) => {
+  const cleaned = {};
+  Object.keys(obj).forEach((key) => {
+    if (obj[key] === null || obj[key] === undefined) {
+      cleaned[key] = '';
+    } else {
+      cleaned[key] = obj[key];
+    }
+  });
+  return cleaned;
+};
+
+onMounted(() => {
+  if (books.value) {
+    cachedBooks.push(...books.value);
+  }
+});
+// Split the logic of this watcher into a function
+// to make it easier to test
+function filterBooks() {
+  const searchValue = debouncedSearch.value.toLowerCase();
+    const filteredBooks = books.value.filter((book) => {
+      const cleanedBook = cleanObject(book);
+      return (
+        cleanedBook.titulo.toLowerCase().includes(searchValue) ||
+        cleanedBook.autor.toLowerCase().includes(searchValue) ||
+        cleanedBook.editora.toLowerCase().includes(searchValue) ||
+        cleanedBook.isbn.toLowerCase().includes(searchValue) ||
+        cleanedBook.anoDeImpressao.toString().includes(searchValue) ||
+        cleanedBook.observacao.toLowerCase().includes(searchValue)
+      );
+    });
+    books.value = filteredBooks;
+}
+
+watch(debouncedSearch, async () => {
+  if (debouncedSearch.value) {
+    filterBooks();
+  } else {
+    books.value = cachedBooks;
+  }
+});
 </script>
 
 <template>
@@ -36,15 +61,27 @@ const { data: books, pending, error } = useAsyncData(
     <LandingSectionhead>
       <template v-slot:title>Biblioteca</template>
       <template v-slot:desc>Se pegou um livro, avise aqui, se deseja registrar um livro, registre aqui também.</template>
-      <!-- Create a button in the right of Biblioteca to register books -->
     </LandingSectionhead>
-    <LandingLink size="lg" styleName="outline" rel="noopener" href="/biblioteca/cadastro" target="_blank">Registrar Livros</LandingLink>
+    <div class="mt-10 mx-auto flex justify-center">
+      <input
+        type="text"
+        class="w-full px-4 py-2 ring-1 ring-gray-500 transition text-gray-700 bg-white rounded-md focus:outline-none focus:ring-2 focus:ring-green-600"
+        placeholder="Pesquisar"
+        v-model="search"
+      />
+    </div>
 
-      <div v-if="pending">Loading tracks...</div>
-      <div v-else-if="error">{{ error.message }}</div>
-      <div v-else class="grid md:grid-cols-3 gap-10 mx-auto max-w-screen-lg mt-12">
-        <LandingBook v-for="item of books" :book="item" :key="item.id"/>
-      </div>
-    
+    <div class="mt-10 mx-auto flex justify-center">
+      <LandingLink size="lg" class="outline" rel="noopener" href="/biblioteca/cadastro" target="_blank">Registrar Livros</LandingLink>
+    </div>
+
+    <div v-if="pending">Loading tracks...</div>
+    <div v-else-if="error">{{ error.message }}</div>
+    <div
+      v-else
+      class="grid gap-1 mx-auto grid-cols-2 mt-12 sm:grid-cols-2 md:grid-cols-3 md:max-w-screen-lg xl:grid-cols-5 xl:max-w-screen-2xl"
+    >
+      <LandingBook v-for="item of books" :book="item" :key="item.id" />
+    </div>
   </LandingContainer>
 </template>

@@ -1,20 +1,20 @@
 <script setup>
 const menuitems = [
   {
-    title: "Pagina Inicial",
-    path: "/",
+    title: 'Pagina Inicial',
+    path: '/',
   },
   {
-    title: "Biblioteca",
-    path: "/biblioteca",
+    title: 'Biblioteca',
+    path: '/biblioteca',
   },
+  // {
+  //   title: "Membros",
+  //   path: "/membros/cadastro",
+  // },
   {
-    title: "Membros",
-    path: "/membros/cadastro",
-  },
-  {
-    title: "Sobre",
-    path: "/sobre",
+    title: 'Sobre',
+    path: '/sobre',
   },
 ];
 
@@ -26,18 +26,12 @@ const open = ref(false);
     <header class="flex flex-col lg:flex-row justify-between items-center my-5">
       <div class="flex w-full lg:w-auto items-center justify-between">
         <a href="/" class="text-lg"
-          ><span class="font-bold text-green-600">Unidos </span
-          ><span class="text-slate-500">no </span>
+          ><span class="font-bold text-green-600">Unidos </span><span class="text-slate-500">no </span>
           <span class="font-bold text-blue-950">Senhor</span>
         </a>
         <div class="block lg:hidden">
           <button @click="open = !open" class="text-gray-800">
-            <svg
-              fill="currentColor"
-              class="w-4 h-4"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg fill="currentColor" class="w-4 h-4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <title>Menu</title>
               <path
                 v-show="open"
@@ -54,31 +48,24 @@ const open = ref(false);
           </button>
         </div>
       </div>
-      <nav
-        class="w-full lg:w-auto mt-2 lg:flex lg:mt-0"
-        :class="{ block: open, hidden: !open }"
-      >
+      <nav class="w-full lg:w-auto mt-2 lg:flex lg:mt-0" :class="{ block: open, hidden: !open }">
         <ul class="flex flex-col lg:flex-row lg:gap-3">
           <li v-for="item of menuitems">
-            <a
-              :href="item.path"
-              class="flex lg:px-3 py-2 text-gray-600 hover:text-gray-900"
-            >
+            <a :href="item.path" class="flex lg:px-3 py-2 text-gray-600 hover:text-gray-900">
               {{ item.title }}
             </a>
           </li>
         </ul>
         <div class="lg:hidden flex items-center mt-3 gap-4">
-          <LandingLink href="#" styleName="muted" block size="md"
-            >Log in3</LandingLink
-          >
-          <LandingLink href="#" size="md" block>Sign up</LandingLink>
+          <LandingLink href="#" styleName="muted" block size="md">Log in</LandingLink>
+          <!-- <LandingLink href="#" size="md" block>Sign up</LandingLink> -->
         </div>
       </nav>
       <div>
         <div class="hidden lg:flex items-center gap-4">
-          <a href="#">Log i2</a>
-          <LandingLink href="#" size="md">Sign up</LandingLink>
+          <!-- <LandingLink href="#" size="md">Sign up</LandingLink> -->
+          <LandingLink href="#" size="md">Log in</LandingLink>
+          <!-- <LandingLink href="#" size="md">Sign up</LandingLink> -->
         </div>
       </div>
     </header>
