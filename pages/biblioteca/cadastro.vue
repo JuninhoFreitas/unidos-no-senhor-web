@@ -1,7 +1,9 @@
-<script setup>
+<script lang="ts" setup>
 definePageMeta({
   layout: "landing",
+  middleware: "auth",
 });
+
 </script>
 
 <template>

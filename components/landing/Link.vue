@@ -1,4 +1,5 @@
 <script setup lang="ts">
+//open link in the same tab
 interface Props {
   href: string;
   size?: "md" | "lg";
