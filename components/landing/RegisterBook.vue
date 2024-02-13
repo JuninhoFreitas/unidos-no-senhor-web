@@ -56,6 +56,7 @@ onMounted(() => {
         isbn: object.isbn,
         anoDeImpressao: object.year,
         observacao: object.observation,
+        reservado: object.available == 'on' ? true : false,
       },
     };
     
@@ -157,7 +158,18 @@ onMounted(() => {
       />
       <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">Por favor, informe a observação do livro.</div>
     </div>
-    <!-- Criar botão para cadastrar os livros -->
+    <!-- Create an input with the name available and it should be a switch  -->
+    <div class="mb-5">
+      <label for="available" class="text-gray-800">Disponível</label>
+      <!-- Create a beautiful style for this checkbox -->
+      <input
+        type="checkbox"
+        class="w-5 h-5 rounded-md border-2 border-gray-300"
+        name="available"
+      />
+      <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">Por favor, informe se este livro estiver livre.</div>
+    </div>
+    
     <LandingButton type="submit" size="lg" block>Cadastrar Livro</LandingButton>
     <div id="result" class="mt-3 text-center"></div>
   </form>

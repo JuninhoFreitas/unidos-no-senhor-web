@@ -2,7 +2,9 @@
 definePageMeta({
   layout: 'landing',
 });
-
+useHead({
+  title: "Unidos no Senhor | Sobre Nós",
+});
 const PrTiagoW =
   'https://static.wixstatic.com/media/f6cfc7_ec84b04cf4a44a2593636a0157e6800e~mv2.jpg/v1/fill/w_329,h_329,al_c,lg_1,q_80,enc_auto/f6cfc7_ec84b04cf4a44a2593636a0157e6800e~mv2.jpg';
 const PrGilberto =

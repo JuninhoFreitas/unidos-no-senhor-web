@@ -22,8 +22,11 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "@nuxt/ui": "^2.13.0",
     "@pinia/nuxt": "^0.5.1",
+    "@types/joi": "^17.2.3",
     "axios": "^1.6.7",
+    "joi": "^17.12.1",
     "nuxt-storage": "^1.2.2",
     "pinia": "^2.1.7"
   }

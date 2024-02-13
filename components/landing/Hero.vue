@@ -40,8 +40,7 @@ const { user, show_login_window, is_authenticated } = storeToRefs(authStore)
         Servindo a Deus e as pessoas.
       </p>
       <div class="mt-6 flex flex-col sm:flex-row gap-3">
-        <LandingLink class="disabled " target="_blank" rel="noopener">Membros</LandingLink>
-        <!-- Use Anchor to create link to biblioteca -->
+        <a href="/membros" class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 px-5 py-2.5 bg-white border-2 border-black hover:bg-gray-100 text-black ">Membros</a>
         <a href="/biblioteca" class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 px-5 py-2.5 bg-white border-2 border-black hover:bg-gray-100 text-black ">Biblioteca</a>
         <a href="/biblioteca/cadastro" class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 px-5 py-2.5 bg-white border-2 border-black hover:bg-gray-100 text-black ">Registrar Livros</a>
       </div>

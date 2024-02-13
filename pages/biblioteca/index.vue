@@ -1,10 +1,14 @@
 <script setup>
-import { useDebounce } from '@vueuse/core';
-const config = useRuntimeConfig();
-
 definePageMeta({
   layout: 'landing',
 });
+useHead({
+  title: "Unidos no Senhor | Biblioteca",
+});
+
+import { useDebounce } from '@vueuse/core';
+const config = useRuntimeConfig();
+
 
 const { data: books, pending, error } = useAsyncData('books', () => $fetch(`${config.public.baseUrl}/biblioteca`));
 
