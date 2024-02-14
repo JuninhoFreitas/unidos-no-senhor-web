@@ -2,6 +2,11 @@
 definePageMeta({
   layout: "landing",
   middleware: "auth",
+  roles: ['admin'],
+  isProtected: true,
+});
+useHead({
+  title: 'Unidos no Senhor | Cadastro de Livros',
 });
 
 </script>

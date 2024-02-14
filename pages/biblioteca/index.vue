@@ -3,12 +3,11 @@ definePageMeta({
   layout: 'landing',
 });
 useHead({
-  title: "Unidos no Senhor | Biblioteca",
+  title: 'Unidos no Senhor | Biblioteca',
 });
 
 import { useDebounce } from '@vueuse/core';
 const config = useRuntimeConfig();
-
 
 const { data: books, pending, error } = useAsyncData('books', () => $fetch(`${config.public.baseUrl}/biblioteca`));
 
@@ -37,18 +36,18 @@ onMounted(() => {
 // to make it easier to test
 function filterBooks() {
   const searchValue = debouncedSearch.value.toLowerCase();
-    const filteredBooks = books.value.filter((book) => {
-      const cleanedBook = cleanObject(book);
-      return (
-        cleanedBook.titulo.toLowerCase().includes(searchValue) ||
-        cleanedBook.autor.toLowerCase().includes(searchValue) ||
-        cleanedBook.editora.toLowerCase().includes(searchValue) ||
-        cleanedBook.isbn.toLowerCase().includes(searchValue) ||
-        cleanedBook.anoDeImpressao.toString().includes(searchValue) ||
-        cleanedBook.observacao.toLowerCase().includes(searchValue)
-      );
-    });
-    books.value = filteredBooks;
+  const filteredBooks = books.value.filter((book) => {
+    const cleanedBook = cleanObject(book);
+    return (
+      cleanedBook.titulo.toLowerCase().includes(searchValue) ||
+      cleanedBook.autor.toLowerCase().includes(searchValue) ||
+      cleanedBook.editora.toLowerCase().includes(searchValue) ||
+      cleanedBook.isbn.toLowerCase().includes(searchValue) ||
+      cleanedBook.anoDeImpressao.toString().includes(searchValue) ||
+      cleanedBook.observacao.toLowerCase().includes(searchValue)
+    );
+  });
+  books.value = filteredBooks;
 }
 
 watch(debouncedSearch, async () => {
@@ -76,7 +75,11 @@ watch(debouncedSearch, async () => {
     </div>
 
     <div class="mt-10 mx-auto flex justify-center">
-      <a href="/biblioteca/cadastro" class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 px-5 py-2.5 bg-white border-2 border-black hover:bg-gray-100 text-black">Registrar Livros</a>
+      <a
+        href="/biblioteca/cadastro"
+        class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 px-5 py-2.5 bg-white border-2 border-black hover:bg-gray-100 text-black"
+        >Registrar Livros</a
+      >
       <!-- <LandingLink size="lg" class="outline" rel="noopener" to="/biblioteca/cadastro" target="_blank">Registrar Livros</LandingLink> -->
     </div>
 
