@@ -46,7 +46,7 @@ definePageMeta({
         <template v-slot:title>Membros Inativos</template>
         <template v-slot:content>20</template>
       </LandingCard>
-      <LandingRegisterMember></LandingRegisterMember>
+      <MemberRegisterMember></MemberRegisterMember>
     </LandingForm>
   </LandingContainer>
 </template>

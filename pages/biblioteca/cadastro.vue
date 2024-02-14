@@ -15,7 +15,7 @@ definePageMeta({
 
     <div class="grid md:grid-cols-1 gap-10 mx-auto max-w-4xl mt-16">
       <div>
-        <LandingRegisterBook/>
+        <LibraryRegisterBook/>
       </div>
     </div>
   </LandingContainer>

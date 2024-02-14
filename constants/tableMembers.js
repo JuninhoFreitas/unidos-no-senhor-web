@@ -1,4 +1,4 @@
-export const columnsTableMembros = [
+export const columnsTableMembers = [
   {
     key: 'nome',
     label: 'Nome',

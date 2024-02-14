@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMyMembrosStore } from '~/store/membros';
+import { useMemberStore } from '~/store/member';
 import type { FormError, FormSubmitEvent } from '#ui/types';
 
 //Create a function to validate if the user inserted a date in dd/mm/yyyy format
@@ -22,8 +22,8 @@ const validate = (state: any): FormError[] => {
 
 const isOpen = ref(false);
 const mensagem_erro = ref('');
-const storeMembro = useMyMembrosStore();
-const { createMembro, listMembros } = storeMembro;
+const store = useMemberStore();
+const { createMember, listMembers } = store;
 const state = reactive({
   nome: undefined,
   cpf: undefined,
@@ -74,11 +74,12 @@ async function onSubmit (event: FormSubmitEvent<any>) {
   const form = document.getElementById('form');
   payload.cpf = cleanDotsAndHyphens(payload.cpf);
   const json = JSON.stringify(payload);
-  createMembro(json).then((response) => {
+  console.log('json', json);
+  createMember(json).then((response) => {
       console.log('R', response);
       if (response.status === 201) {
-        form.reset();
-        listMembros();
+        // form.reset();
+        listMembers();
       } else {
         response.json().then((data) => {
           mensagem_erro.value = data.message;
@@ -109,7 +110,7 @@ async function onSubmit (event: FormSubmitEvent<any>) {
             <UInput v-model="state[opt.name]"  :placeholder="opt.placeholder" :type="opt.type" />
           </UFormGroup>
           <UFormGroup label="Situação" name="situacao">
-            <USelect v-model="country" :options="countries" variant="outline" placeholder="Situação" class="" />
+            <USelect v-model="state.situacao" :options="countries" variant="outline" placeholder="Situação" name="situacao" />
           </UFormGroup>
           <UButton type="submit" size="lg" class="bg-black text-white hover:bg-slate-900  border-2 border-transparent" block>Cadastrar Membro</UButton>
         </UForm>

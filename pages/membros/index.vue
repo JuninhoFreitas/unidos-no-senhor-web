@@ -6,20 +6,20 @@ definePageMeta({
 useHead({
   title: "Unidos no Senhor | Membros",
 });
-import {columnsTableMembros} from '@/constants/tableMembros';
-import { useMyMembrosStore } from '~/store/membros';
-const membrosStore = useMyMembrosStore();
+import { columnsTableMembers } from '@/constants/tableMembers';
+import { useMemberStore } from '~/store/member';
+const membersStore = useMemberStore();
 
 const isOpen = ref(false);
 const selected = ref([]);
 const q = ref('');
 
-const { membros } = storeToRefs(membrosStore);
-membrosStore.listMembros();
+const { members } = storeToRefs(membersStore);
+membersStore.listMembers();
 
-function deleteMembros(){
+function deleteMembers(){
   selected.value.forEach(async (row)=>{
-    await membrosStore.deleteMembro(row.id)
+    await membersStore.deleteMember(row.id)
   })
 }
 
@@ -27,17 +27,17 @@ const items = (row) => [
   [{
     label: 'Delete',
     icon: 'i-heroicons-trash-20-solid',
-    click: () => membrosStore.deleteMembro(row.id)
+    click: () => membersStore.deleteMember(row.id)
   },
 ]
 ]
 
 const filteredRows = computed(() => {
   if (!q.value) {
-    return membros.value;
+    return members.value;
   }
 
-  return membros.value.filter((person) => {
+  return members.value.filter((person) => {
     return Object.values(person).some((value) => {
       return String(value).toLowerCase().includes(q.value.toLowerCase());
     });
@@ -63,7 +63,7 @@ const filteredRows = computed(() => {
           <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="isOpen = false" />
         </div>
       </template>
-      <LandingRegisterMember></LandingRegisterMember>
+      <MemberRegisterMember></MemberRegisterMember>
       <Placeholder class="h-full" />
     </UCard>
   </UModal>
@@ -72,9 +72,9 @@ const filteredRows = computed(() => {
     <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
       <UInput v-model="q" placeholder="Filtre membros..." />
       <UButton label="Cadastrar membro" class="ml-3" @click="isOpen = true" />
-      <UButton label="Excluir" class="ml-3 bg-red-600" @click="deleteMembros" />
+      <UButton label="Excluir" class="ml-3 bg-red-600" @click="deleteMembers" />
     </div>
-    <UTable  v-model="selected" :rows="filteredRows" :columns="columnsTableMembros" class="border ring-1 ring-green-200 focus:ring-primary-500" >
+    <UTable  v-model="selected" :rows="filteredRows" :columns="columnsTableMembers" class="border ring-1 ring-green-200 focus:ring-primary-500" >
       <template #name-data="{ row }">
       <span :class="[selected.find(person => person.id === row.id) && 'text-primary-500 dark:text-primary-400']">{{ row.nome }}</span>
     </template>
@@ -88,4 +88,4 @@ const filteredRows = computed(() => {
   </div>
 </template>
 
-<style></style>
+<style></style>~/constants/tableMembers

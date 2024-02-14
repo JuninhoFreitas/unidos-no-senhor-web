@@ -1,7 +1,7 @@
 <script setup>
-const config = useRuntimeConfig()
-import axios from 'axios';
+import { useLibraryStore } from '~/store/library';
 onMounted(() => {
+  const store = useLibraryStore();
   const form = document.getElementById('form');
   const title = form.querySelector('input[name="title"]');
   const result = document.getElementById('result');
@@ -40,16 +40,8 @@ onMounted(() => {
     }
     const formData = new FormData(form);
     const object = Object.fromEntries(formData);
-    const json = JSON.stringify(object);
-
     result.innerHTML = 'Publicando...';
-
-    console.log('JSON', json)
-    const options = {
-      method: 'POST',
-      url: `${config.public.baseUrl}/biblioteca`,
-      headers: { 'Content-Type': 'application/json' },
-      data: {
+    const body = {
         titulo: object.title,
         autor: object.author,
         editora: object.publisher,
@@ -57,13 +49,10 @@ onMounted(() => {
         anoDeImpressao: object.year,
         observacao: object.observation,
         reservado: object.available == 'on' ? true : false,
-      },
     };
-    
+
     let errored = false;
-    axios
-      .request(options)
-      .then(function (response) {
+    store.createBook(body).then(function (response) {
         result.style=""
         if( response.status == 201) {
           result.style=""
@@ -93,11 +82,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- To make this contact form work, create your free access key from https://web3forms.com/
-     Then you will get all form submissions in your email inbox. -->
-     <!-- //action="https://api.web3forms.com/submit" -->
   <form  method="POST" id="form" class="needs-validation" novalidate>
-    <!-- Criar formulário para cadastrar livros, deve haver os seguites campos: TÍTULO,AUTOR,EDITORA,ISBN,ANO DE IMPRESSÃO,OBSERVAÇÃO -->
     <div class="mb-5">
       <input
         type="text"
@@ -194,3 +179,4 @@ onMounted(() => {
   border-color: #dc3545;
 }
 </style>
+~/store/library

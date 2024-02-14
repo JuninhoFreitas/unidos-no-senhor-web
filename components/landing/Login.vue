@@ -1,26 +1,3 @@
-<!-- #Create a Login Window 
-  - The window should have a form with two inputs: email and password
-  - The window should have a button to submit the form
-    - the style of the button must be a glass with black border and blur background, black font color and white font color when hove
-  - The window should have a button to close the window
-  - The request to the server should be made using the axios API
-  - Here is an example of response:
-  {
-	"access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJyaXpvbGxhanJAZ21haWwuY29tIiwic3ViIjoyLCJpYXQiOjE3MDc3MTQ2NjUsImV4cCI6MTcwNzcxNDcyNX0._0-o9yixglHIxci8QZG0s217iHr-UDGEIz3L0O1lKJM"
-  }
-  - The request should be made to the following endpoint: config.public.baseUrl + '/login'
-  - The request should be a POST request
-  - The request should have the following body:
-  {
-    "email": "
-    "password": "
-  }
-
-  - the access_token should be stored in the localStorage with the key "token"
-  - The window should be closed when the user clicks the submit button
-};
-  - The request should be made when the user clicks the submit button
--->
 <script setup>
 import { ref } from 'vue';
 import { useMyAuthStore } from '~/store/auth';

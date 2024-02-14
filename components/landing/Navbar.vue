@@ -1,6 +1,5 @@
 <script setup>
 import { useMyAuthStore } from '~/store/auth';
-import { getData } from 'nuxt-storage/local-storage';
 const menuitems = [
   {
     title: 'Pagina Inicial',
@@ -10,10 +9,10 @@ const menuitems = [
     title: 'Biblioteca',
     path: '/biblioteca',
   },
-  // {
-  //   title: "Membros",
-  //   path: "/membros/cadastro",
-  // },
+  {
+    title: "Membros",
+    path: "/membros",
+  },
   {
     title: 'Sobre',
     path: '/sobre',
@@ -24,8 +23,7 @@ const open = ref(false);
 
 const authStore = useMyAuthStore();
 const { show_login_window, authenticated } = storeToRefs(authStore);
-// get authenticated from cookies
-authenticated.value = useCookie('token').value ? true : false; // get token from cookies
+authenticated.value = useCookie('token').value ? true : false;
 
 const openLogin = () => {
   show_login_window.value = true;
