@@ -39,5 +39,19 @@ export const useMemberStore = defineStore('members', () => {
     members.value = nonDeletedMembers;
   };
 
-  return { members, createMember, listMembers, deleteMember };
+  const updateMember = async (membro) => {
+    const { id, ...updateBody } = membro;
+    const json = JSON.stringify(updateBody);
+    console.log('MEMBRO ', membro)
+    return await fetch(`${config.public.baseUrl}/membro/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${useCookie('token').value}`,
+      },
+      body: json,
+    });
+  };
+
+  return { members, createMember, listMembers, deleteMember, updateMember };
 });

@@ -32,10 +32,15 @@ useHead({
 });
 import { columnsTableMembers } from '@/constants/tableMembers';
 import { useMemberStore } from '~/store/member';
+import { useOpenedStore } from '~/store/openeds';
+
+const openedStore = useOpenedStore();
+const { opened } = storeToRefs(openedStore);
 const membersStore = useMemberStore();
 
-const isOpen = ref(false);
+const registerIsOpen = ref(false);
 const selected = ref([]);
+const memberToUpdate = ref(null);
 const q = ref('');
 
 const { members } = storeToRefs(membersStore);
@@ -53,6 +58,14 @@ const items = (row) => [
     icon: 'i-heroicons-trash-20-solid',
     click: () => membersStore.deleteMember(row.id)
   },
+  {
+    label: 'Edit',
+    icon: 'i-heroicons-pencil-20-solid',
+    click: () => {
+      memberToUpdate.value = row;
+      opened.value.dialogs.updatedMember = true;
+    }
+  }
 ]
 ]
 
@@ -70,7 +83,7 @@ const filteredRows = computed(() => {
 </script>
 
 <template>
-  <UModal v-model="isOpen" fullscreen>
+  <UModal v-model="registerIsOpen" fullscreen>
     <UCard
       :ui="{
         base: 'h-full flex flex-col',
@@ -84,10 +97,31 @@ const filteredRows = computed(() => {
       <template #header>
         <div class="flex items-center justify-between">
           <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">Cadastro de Membros</h3>
-          <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="isOpen = false" />
+          <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="registerIsOpen = false" />
         </div>
       </template>
-      <MemberRegisterMember></MemberRegisterMember>
+      <MemberRegisterMember action="create" ></MemberRegisterMember>
+      <Placeholder class="h-full" />
+    </UCard>
+  </UModal>
+  <UModal v-model="opened.dialogs.updatedMember" fullscreen>
+    <UCard
+      :ui="{
+        base: 'h-full flex flex-col',
+        rounded: '',
+        divide: 'divide-y divide-gray-100 dark:divide-gray-800',
+        body: {
+          base: 'grow',
+        },
+      }"
+    >
+      <template #header>
+        <div class="flex items-center justify-between">
+          <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">Atualizar Membro</h3>
+          <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="opened.dialogs.updatedMember = false" />
+        </div>
+      </template>
+    <MemberRegisterMember action="update" :member-to-update="memberToUpdate"></MemberRegisterMember>
       <Placeholder class="h-full" />
     </UCard>
   </UModal>
@@ -95,7 +129,7 @@ const filteredRows = computed(() => {
   <div class="max-w-screen-2xl mx-auto px-5">
     <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
       <UInput v-model="q" placeholder="Filtre membros..." />
-      <UButton label="Cadastrar membro" class="ml-3" @click="isOpen = true" />
+      <UButton label="Cadastrar membro" class="ml-3" @click="registerIsOpen = true" />
       <UButton label="Excluir" class="ml-3 bg-red-600" @click="deleteMembers" />
     </div>
     <UTable  v-model="selected" :rows="filteredRows" :columns="columnsTableMembers" class="border ring-1 ring-green-200 focus:ring-primary-500" >
