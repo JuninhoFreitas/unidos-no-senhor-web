@@ -5,6 +5,7 @@ export const useOpenedStore = defineStore('opened', () => {
   const opened = reactive({
     dialogs: {
       updatedMember: false,
+      updatedBook: false,
     }
   })
 

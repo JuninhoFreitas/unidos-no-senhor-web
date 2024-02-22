@@ -1,5 +1,8 @@
 export const columnsTableMembers = [
   {
+    key: 'actions'
+  },
+  {
     key: 'nome',
     label: 'Nome',
     sortable: true,
@@ -63,7 +66,4 @@ export const columnsTableMembers = [
     key: 'conjuge',
     label: 'Cônjuge',
   },
- {
-    key: 'actions'
-  }
 ];
