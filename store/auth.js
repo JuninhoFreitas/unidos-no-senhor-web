@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
 export const useMyAuthStore = defineStore('myAuthStore', ()=>{
   const config = useRuntimeConfig();
@@ -17,11 +17,18 @@ export const useMyAuthStore = defineStore('myAuthStore', ()=>{
          'Authorization': `Bearer ${useCookie('token').value}`,
         },
     });
-    const data = await response.json();
-    if (data) {
-      roles.value = data;
-      return data;
+    const status = response.status;
+    switch (status) {
+      case 200:
+          const data = await response.json();
+          roles.value = data;
+          return data;
+      case 204:
+        return [];
+      default:
+        break;
     }
+
   }
 
   async function login ({ email, password }){
