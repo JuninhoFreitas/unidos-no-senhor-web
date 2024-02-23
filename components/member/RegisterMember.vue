@@ -15,7 +15,7 @@ const validateDate = (date) => {
 
 const validate = (state: any): FormError[] => {
   const errors = [];
-  if (!state.email) errors.push({ path: 'email', message: 'Required' });
+  if(state.email === "") state.email = null;
   if (!state.nome) errors.push({ path: 'nome', message: 'Required' });
   if (state.dataNascimento && !validateDate(state.dataNascimento))
     errors.push({ path: 'dataNascimento', message: 'Formato de data inválido, exemplo: 31/12/2024' });
@@ -37,7 +37,7 @@ const { createMember, listMembers, updateMember } = store;
 
 let state = reactive({
   nome: undefined,
-  email: undefined,
+  email: null,
   telefone: undefined,
   dataNascimento: undefined,
   dataBatismo: undefined,
