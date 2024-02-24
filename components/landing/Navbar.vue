@@ -10,8 +10,8 @@ const menuitems = [
     path: '/biblioteca',
   },
   {
-    title: "Membros",
-    path: "/membros",
+    title: 'Membros',
+    path: '/membros',
   },
   {
     title: 'Sobre',
@@ -24,6 +24,13 @@ const open = ref(false);
 const authStore = useMyAuthStore();
 const { show_login_window, authenticated } = storeToRefs(authStore);
 authenticated.value = useCookie('token').value ? true : false;
+
+if (authenticated.value) {
+  menuitems.push({
+    title: 'Lista de Presença',
+    path: '/listaDePresenca',
+  });
+}
 
 const openLogin = () => {
   show_login_window.value = true;

@@ -3,5 +3,22 @@
     "activityBar.background": "#1f1e00",
     "titleBar.activeBackground": "#499404",
     "titleBar.activeForeground": "#022b09"
-  }
+  },
+  "editor.codeActionsOnSave": ["source.organizeImports"],
+  "javascript.suggest.autoImports": false,
+  "typescript.suggest.autoImports": false,
+  "volar.experimental.templateInterpolationService": true,
+  "volar.vueserver.useSecondServer": true,
+  "debug.javascript.autoAttachFilter": "onlyWithFlag",
+  "tailwindCSS.validate": false,
+  "tailwindCSS.lint.recommendedVariantOrder": "ignore",
+  "tailwindCSS.codeActions": false,
+  "tailwindCSS.files.exclude": [
+    "**/.git/**",
+    "**/node_modules/**",
+    "**/.hg/**",
+    "**/.svn/**",
+    "**/yarn.lock",
+    "**/@generated/**"
+  ]
 }
