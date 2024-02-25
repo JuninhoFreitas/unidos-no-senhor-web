@@ -20,6 +20,7 @@ const validate = (state: any): FormError[] => {
 };
 
 async function onSubmit(event: FormSubmitEvent<any>) {
+  window.alert('formated' + formattedDate.value);
   // Do something with data
   eventsStore.createEvent({
     nome: eventState.nome,
@@ -40,7 +41,9 @@ const openCreateEvent = () => {
 const rawDate = ref(null);
 const formattedDate = computed(() => {
   if (rawDate.value) {
+    window.alert('rawDate: ' + rawDate.value);
     const date = new Date(rawDate.value);
+    window.alert("date.toLocaleDateString('pt-BR')" + date.toLocaleDateString('pt-BR'));
     return date.toLocaleDateString('pt-BR');
   }
   return new Date().toLocaleDateString('pt-BR');
