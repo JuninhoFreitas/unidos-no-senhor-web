@@ -21,7 +21,7 @@ const validate = (state: any): FormError[] => {
 
 async function onSubmit(event: FormSubmitEvent<any>) {
   // Do something with data
-  eventsStore.createEvent({
+  await eventsStore.createEvent({
     nome: eventState.nome,
     descricao: eventState.descricao,
     data: formattedDate.value,
@@ -29,7 +29,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
   // Reload the page for the user using router
   reloadNuxtApp({
     path: '/listaDePresenca',
-    ttl: 1000, // default 10000
+    ttl: 5000, // default 10000
   });
 }
 

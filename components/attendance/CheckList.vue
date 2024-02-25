@@ -2,19 +2,22 @@
 import { columnsTableAttendance } from '@/constants/tableAttendance';
 import { useAttendanceStore } from '~/store/attendance';
 import { useEventsStore } from '~/store/events';
-
+import { useOpenedStore } from '~/store/openeds';
 const eventsStore = useEventsStore();
 const { selectedEvent } = storeToRefs(eventsStore);
 const attendanceStore = useAttendanceStore();
 const { participants, selectedParticipants } = storeToRefs(attendanceStore);
+const openedStore = useOpenedStore();
+const { opened } = storeToRefs(openedStore);
 attendanceStore.listParticipants();
-//TODO: Colocar evento aqui como variável
+
 await attendanceStore.listAllChecked(selectedEvent.value.id);
 
 const q = ref('');
 
 // Função para Atualizar a Lista de Presença
 const createAttendance = async () => {
+  opened.value.dialogs.updatedParticipant = true;
   if (selectedParticipants.value) {
     const selectedIds = selectedParticipants.value.map((person) => person.id);
     await attendanceStore.createAttendance(selectedIds, selectedEvent.value.id);
@@ -64,6 +67,17 @@ const filteredRows = computed(() => {
         }}</span>
       </template>
     </UTable>
+    <UModal v-model="opened.dialogs.updatedParticipant">
+      <!-- Create a alert to success -->
+      <UAlert
+        class="text-black"
+        color="black"
+        title="Presenças Salvas"
+        message="Lista de presença atualizada com sucesso"
+        @close="opened.dialogs.updatedParticipant = false"
+      >
+      </UAlert>
+    </UModal>
     <UButton
       class="flex items-end justify-center mt-5 mx-auto"
       color="primary"
