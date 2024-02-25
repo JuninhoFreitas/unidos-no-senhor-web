@@ -6,8 +6,15 @@ export const useOpenedStore = defineStore('opened', () => {
     dialogs: {
       updatedMember: false,
       updatedBook: false,
-    }
-  })
+    },
+    windows: {
+      addBook: false,
+      addMember: false,
+      addEvent: false,
+      listEvents: true,
+      checklist: false,
+    },
+  });
 
   return { opened };
 });
