@@ -3,8 +3,10 @@ import { defineStore } from 'pinia';
 export const useEventsStore = defineStore('events', () => {
   const config = useRuntimeConfig();
   const events = ref([]);
+  const selectedEvent = ref(null);
 
   const createEvent = async (body) => {
+    console.log(body, 'body');
     const response = await fetch(`${config.public.baseUrl}/eventos`, {
       method: 'POST',
       headers: {
@@ -18,7 +20,9 @@ export const useEventsStore = defineStore('events', () => {
 
   const listEvents = async () => {
     const response = await fetch(`${config.public.baseUrl}/eventos`);
-    events.value = await response.json();
+    const json = await response.json();
+    console.log(json);
+    events.value = json;
     return events.value;
   };
 
@@ -46,5 +50,5 @@ export const useEventsStore = defineStore('events', () => {
     events.value = nonDeletedBooks;
   };
 
-  return { createEvent, listEvents, deleteEvent, updateEvent, events };
+  return { createEvent, listEvents, deleteEvent, updateEvent, events, selectedEvent };
 });

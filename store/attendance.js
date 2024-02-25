@@ -6,7 +6,15 @@ export const useAttendanceStore = defineStore('attendance', () => {
   const participants = ref([]);
   const selectedParticipants = ref([]);
 
-  const createAttendance = async (body) => {
+  const createAttendance = async (participante_id, evento_id) => {
+    console.log({
+      participante_id,
+      evento_id,
+    });
+    const body = {
+      evento_id,
+      participante_id,
+    };
     const response = await fetch(`${config.public.baseUrl}/lista-de-presenca`, {
       method: 'POST',
       headers: {
@@ -81,12 +89,13 @@ export const useAttendanceStore = defineStore('attendance', () => {
       },
     });
     const json = await response.json();
+    console.log('Ue', json);
 
     selectedParticipants.value = json.map((at) => {
       const name = participants.value.find((p) => p.id === at.participante_id).nome;
       return {
-        name,
         id: at.participante_id,
+        name,
       };
     });
     return selectedParticipants.value;
