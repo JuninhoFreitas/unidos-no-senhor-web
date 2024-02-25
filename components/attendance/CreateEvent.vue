@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { FormError, FormSubmitEvent } from '#ui/types';
 import { useEventsStore } from '@/store/events';
+import { reloadNuxtApp } from 'nuxt/app';
 import { useOpenedStore } from '~/store/openeds';
 const openedStore = useOpenedStore();
 const { opened } = storeToRefs(openedStore);
@@ -25,8 +26,11 @@ async function onSubmit(event: FormSubmitEvent<any>) {
     descricao: eventState.descricao,
     data: formattedDate.value,
   });
-
-  await eventsStore.listEvents();
+  // Reload the page for the user using router
+  reloadNuxtApp({
+    path: '/listaDePresenca',
+    ttl: 1000, // default 10000
+  });
 }
 
 const openCreateEvent = () => {
