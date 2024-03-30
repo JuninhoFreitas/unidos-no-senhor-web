@@ -1,24 +1,29 @@
-# Nuxtship - Nuxt SAAS Starter Website Template
+<center>
+<a href="https://web.unidosnosenhor.com.br">
+<img src="./assets/img/logo.png" width=80/>
+</a>
+</center>
 
-Nuxtship is a free starter nuxt website template for saas, startups, marketing websites & landing pages. Built with Nuxt & TailwindCSS.
+# Web Unidos no Senhor - Front
 
-This Free Template is sponsored by [Gr33nW33n](https://github.com/Gr33nW33n)
-
-If you like my work please feel free to
-
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/jakobaichmayr)
+Este é o projeto do front-end do Website da Unidos, ele é construído usando o framework Nuxt, Vue3, e Tailwind.
 
 ## Live Demo
 
-**[https://nuxtship.netlify.app/](https://nuxtship.netlify.app/)**
+**[https://web.unidosnosenhor.com.br/](https://web.unidosnosenhor.com.br/)**
 
-## Built with Nuxt 3 Minimal Starter
+## Documentação do Nuxt
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+[Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction)
 
-## Setup
+## Pré-Requisitos
 
-Make sure to install the dependencies:
+- [Node + Node Version Manager(Windows)](https://github.com/coreybutler/nvm-windows)
+- [API de Backend da Unidos](https://github.com/JuninhoFreitas/unidos-no-senhor-api/)
+
+## Instalação
+
+Use um destes para instalar as as dependências:
 
 ```bash
 # npm
@@ -34,9 +39,30 @@ yarn install
 bun install
 ```
 
-## Development Server
+## Configurando
 
-Start the development server on `http://localhost:3000`:
+### Varíaveis de Ambiente:
+
+Clone o arquivo `.env.example` e renome-o para `.env`, e realize as alterações necessárias
+
+### Iniciando o Servidor de Backend
+
+É necessário o servidor de backend estar rodando para o site funcionar adequadamente, **caso não for possível executar ele, então inicie o servidor de mock na pasta /mock**
+
+```bash
+# Navegando para a pasta
+cd mock
+
+# Instalando dependências
+npm i
+
+# Executando o Servidor
+npm run start
+```
+
+## Desenvolvendo
+
+Inicie o servidor de desenvolvimento `http://localhost:3000`:
 
 ```bash
 # npm
@@ -52,9 +78,9 @@ yarn dev
 bun run dev
 ```
 
-## Production
+## Servidor de Produção
 
-Build the application for production:
+Faça o build da aplicação usando um destes:
 
 ```bash
 # npm
@@ -70,7 +96,7 @@ yarn build
 bun run build
 ```
 
-Locally preview production build:
+Observe o resultado de produção previamente:
 
 ```bash
 # npm
@@ -85,5 +111,3 @@ yarn preview
 # bun
 bun run preview
 ```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

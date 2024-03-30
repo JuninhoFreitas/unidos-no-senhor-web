@@ -1,0 +1,761 @@
+openapi: 3.0.0
+info:
+  title: Unidos no Senhor API
+  description: Documentação da API da Unidos no Senhor
+  contact: {}
+  version: '1.0'
+servers:
+  - url: /
+tags:
+  - name: membro
+    description: Operações com membros
+paths:
+  /:
+    get:
+      operationId: AppController_getHello
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      x-swagger-router-controller: Default
+  /usuario/listar:
+    get:
+      tags:
+        - usuario
+      operationId: UsuarioController_listar
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      x-swagger-router-controller: Usuario
+  /usuario/cadastrar:
+    post:
+      tags:
+        - usuario
+      operationId: UsuarioController_cadastrar
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioCadastrarDto'
+        required: true
+      responses:
+        '201':
+          description: ''
+      x-swagger-router-controller: Usuario
+  /usuario/login:
+    post:
+      tags:
+        - usuario
+      operationId: UsuarioController_login
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      x-swagger-router-controller: Usuario
+  /usuario/login-token:
+    post:
+      tags:
+        - usuario
+      operationId: UsuarioController_loginToken
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      x-swagger-router-controller: Usuario
+  /usuario/{id}:
+    delete:
+      tags:
+        - usuario
+      operationId: UsuarioController_delete
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: number
+      responses:
+        '204':
+          description: ''
+      x-swagger-router-controller: Usuario
+  /usuario/update:
+    post:
+      tags:
+        - usuario
+      operationId: UsuarioController_updateUsuario
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: number
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUsuarioDto'
+        required: true
+      responses:
+        '201':
+          description: ''
+      x-swagger-router-controller: Usuario
+  /token/refresh:
+    put:
+      operationId: TokenController_refreshToken
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      x-swagger-router-controller: Default
+  /token/roles:
+    get:
+      operationId: TokenController_getRoles
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      x-swagger-router-controller: Default
+  /membro:
+    get:
+      tags:
+        - membro
+      operationId: MembrosController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      x-swagger-router-controller: Membro
+    post:
+      tags:
+        - membro
+      operationId: MembrosController_create
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMembroDto'
+        required: true
+      responses:
+        '201':
+          description: ''
+      x-swagger-router-controller: Membro
+  /membro/{id}:
+    get:
+      tags:
+        - membro
+      operationId: MembrosController_findOne
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      x-swagger-router-controller: Membro
+    put:
+      tags:
+        - membro
+      operationId: MembrosController_update
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMembroDto'
+        required: true
+      responses:
+        '200':
+          description: ''
+      x-swagger-router-controller: Membro
+    delete:
+      tags:
+        - membro
+      operationId: MembrosController_remove
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '204':
+          description: ''
+      x-swagger-router-controller: Membro
+  /biblioteca:
+    get:
+      tags:
+        - biblioteca
+      operationId: BibliotecaController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+                x-content-type: application/json
+      x-swagger-router-controller: Biblioteca
+    post:
+      tags:
+        - biblioteca
+      operationId: BibliotecaController_create
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBibliotecaDto'
+        required: true
+      responses:
+        '201':
+          description: ''
+      x-swagger-router-controller: Biblioteca
+  /biblioteca/{id}:
+    get:
+      tags:
+        - biblioteca
+      operationId: BibliotecaController_findOne
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      x-swagger-router-controller: Biblioteca
+    put:
+      tags:
+        - biblioteca
+      operationId: BibliotecaController_update
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBibliotecaDto'
+        required: true
+      responses:
+        '200':
+          description: ''
+      x-swagger-router-controller: Biblioteca
+    delete:
+      tags:
+        - biblioteca
+      operationId: BibliotecaController_remove
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '204':
+          description: ''
+      x-swagger-router-controller: Biblioteca
+  /eventos:
+    get:
+      operationId: EventosController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      x-swagger-router-controller: Default
+    post:
+      operationId: EventosController_create
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEventoDto'
+        required: true
+      responses:
+        '201':
+          description: ''
+      x-swagger-router-controller: Default
+  /eventos/{id}:
+    get:
+      operationId: EventosController_findOne
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      x-swagger-router-controller: Default
+    delete:
+      operationId: EventosController_remove
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      x-swagger-router-controller: Default
+    patch:
+      operationId: EventosController_update
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateEventoDto'
+        required: true
+      responses:
+        '200':
+          description: ''
+      x-swagger-router-controller: Default
+  /lista-de-presenca:
+    get:
+      operationId: ListaDePresencaController_findAll
+      parameters:
+        - name: limit
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: number
+            default: 50
+        - name: offset
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: number
+            default: 0
+        - name: evento_id
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: participante_id
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: responsavel_id
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+      x-swagger-router-controller: Default
+    post:
+      operationId: ListaDePresencaController_upsert
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateListaDePresencaDto'
+        required: true
+      responses:
+        '201':
+          description: ''
+      x-swagger-router-controller: Default
+  /lista-de-presenca/participantes:
+    get:
+      operationId: ListaDePresencaController_listParticipantes
+      parameters:
+        - name: limit
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: number
+            default: 50
+        - name: offset
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: number
+            default: 0
+        - name: nome
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      x-swagger-router-controller: Default
+    post:
+      operationId: ListaDePresencaController_createParticipante
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateParticipantesDto'
+        required: true
+      responses:
+        '201':
+          description: ''
+      x-swagger-router-controller: Default
+  /lista-de-presenca/participantes/{id}:
+    patch:
+      operationId: ListaDePresencaController_updateParticipante
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateParticipantesDto'
+        required: true
+      responses:
+        '200':
+          description: ''
+      x-swagger-router-controller: Default
+  /lista-de-presenca/buscar/{id}:
+    get:
+      operationId: ListaDePresencaController_findOne
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      x-swagger-router-controller: Default
+  /lista-de-presenca/deletar/{id}:
+    delete:
+      operationId: ListaDePresencaController_remove
+      parameters:
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      x-swagger-router-controller: Default
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        id:
+          type: string
+        titulo:
+          type: string
+        autor:
+          type: string
+        editora:
+          type: string
+        isbn:
+          type: string
+        anoDeImpressao:
+          type: integer
+        observacao:
+          type: string
+          nullable: true
+        reservado:
+          type: boolean
+      example:
+        reservado: true
+        observacao: observacao
+        isbn: isbn
+        titulo: titulo
+        id: id
+        anoDeImpressao: 0
+        editora: editora
+        autor: autor
+    UsuarioCadastrarDto:
+      required:
+        - cpf
+        - email
+        - nome
+        - roles
+        - senha
+        - telefone
+      type: object
+      properties:
+        nome:
+          type: string
+        email:
+          type: string
+        senha:
+          type: string
+        telefone:
+          type: string
+        cpf:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+    UpdateUsuarioDto:
+      required:
+        - cpf
+        - email
+        - nome
+        - roles
+        - senha
+        - telefone
+      type: object
+      properties:
+        nome:
+          type: string
+        email:
+          type: string
+        senha:
+          type: string
+        telefone:
+          type: string
+        cpf:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+    CreateMembroDto:
+      required:
+        - nome
+        - telefone
+      type: object
+      properties:
+        nome:
+          type: string
+        email:
+          type: string
+        telefone:
+          type: string
+        endereco:
+          type: string
+        bairro:
+          type: string
+        cidade:
+          type: string
+        cep:
+          type: string
+        conjuge:
+          type: string
+        dataNascimento:
+          type: string
+        cpf:
+          type: string
+        dataBatismo:
+          type: string
+        cargo:
+          type: string
+        dataEntrada:
+          type: string
+        dataSaida:
+          type: string
+        situacao:
+          type: string
+        observacao:
+          type: string
+    UpdateMembroDto:
+      required:
+        - nome
+        - telefone
+      type: object
+      properties:
+        nome:
+          type: string
+        cpf:
+          type: string
+        email:
+          type: string
+          nullable: true
+          default: ''
+        telefone:
+          type: string
+        endereco:
+          type: string
+        bairro:
+          type: string
+        cidade:
+          type: string
+        cep:
+          type: string
+        conjuge:
+          type: string
+        dataNascimento:
+          type: string
+        dataBatismo:
+          type: string
+        cargo:
+          type: string
+        dataEntrada:
+          type: string
+        dataSaida:
+          type: string
+        situacao:
+          type: string
+        observacao:
+          type: string
+    CreateBibliotecaDto:
+      required:
+        - anoDeImpressao
+        - autor
+        - editora
+        - isbn
+        - observacao
+        - reservado
+        - titulo
+      type: object
+      properties:
+        titulo:
+          type: string
+        autor:
+          type: string
+        editora:
+          type: string
+        isbn:
+          type: string
+        anoDeImpressao:
+          type: string
+        observacao:
+          type: string
+        reservado:
+          type: boolean
+    UpdateBibliotecaDto:
+      type: object
+      properties:
+        titulo:
+          type: string
+        autor:
+          type: string
+        editora:
+          type: string
+        isbn:
+          type: string
+        anoDeImpressao:
+          type: string
+        observacao:
+          type: string
+        reservado:
+          type: boolean
+    CreateEventoDto:
+      required:
+        - descricao
+        - nome
+      type: object
+      properties:
+        nome:
+          type: string
+        descricao:
+          type: string
+        data:
+          type: string
+    UpdateEventoDto:
+      type: object
+      properties:
+        nome:
+          type: string
+        descricao:
+          type: string
+        data:
+          type: string
+    CreateListaDePresencaDto:
+      required:
+        - evento_id
+        - participante_id
+      type: object
+      properties:
+        evento_id:
+          type: string
+        participante_id:
+          type: array
+          items:
+            type: string
+    CreateParticipantesDto:
+      required:
+        - membro_id
+        - nome
+      type: object
+      properties:
+        nome:
+          type: string
+        membro_id:
+          type: string
+    UpdateParticipantesDto:
+      type: object
+      properties:
+        nome:
+          type: string
+        membro_id:
+          type: string

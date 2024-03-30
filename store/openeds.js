@@ -6,6 +6,7 @@ export const useOpenedStore = defineStore('opened', () => {
     dialogs: {
       updatedMember: false,
       updatedBook: false,
+      updatedParticipant: false,
     },
     windows: {
       addBook: false,
