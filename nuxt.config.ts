@@ -21,5 +21,8 @@ export default defineNuxtConfig({
     preference: 'light',
     fallback: 'light'
   },
+  nitro: {
+    static: true
+  },
   ssr: false,
 });
