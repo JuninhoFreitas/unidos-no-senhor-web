@@ -29,7 +29,7 @@ const { show_login_window, authenticated } = storeToRefs(authStore);
     <div>
       <h1 class="text-5xl font-bold lg:text-6xl xl:text-7xl lg:tracking-tight">Igreja Bíblica Unidos no Senhor</h1>
       <p class="text-lg mt-4 max-w-xl text-slate-600">
-        Amando a Deus e as pessoas<br />
+        <br />
         Servindo a Deus e as pessoas.
       </p>
       <div class="flex mt-6 gap-3 flex-col sm:flex-row">
