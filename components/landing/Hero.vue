@@ -22,16 +22,7 @@ const { show_login_window, authenticated } = storeToRefs(authStore);
         Amando a Deus e as pessoas<br />
         Servindo a Deus e as pessoas.
       </p>
-      <div class="flex mt-6 gap-3 flex-col sm:flex-row">
-        <template v-for="link in links">
-          <a
-            :href="link.href"
-            class="px-5 py-2.5 text-black bg-white border-2 border-black rounded text-center transition hover:bg-gray-100 focus-visible:ring-2 ring-offset-2 ring-gray-200"
-            :class="{ hidden: link.auth && !authenticated }"
-            >{{ link.text }}</a
-          >
-        </template>
-      </div>
+      <div class="flex mt-6 gap-3 flex-col sm:flex-row"></div>
     </div>
   </main>
 </template>
