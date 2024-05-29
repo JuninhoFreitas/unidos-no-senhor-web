@@ -27,7 +27,7 @@ const { show_login_window, authenticated } = storeToRefs(authStore);
       <LandingLogin></LandingLogin>
     </div>
     <div>
-      <h1 class="text-5xl font-bold lg:text-6xl xl:text-7xl lg:tracking-tight">Igreja Bíblica Unidos no Senhor</h1>
+      <h1 class="text-5xl font-bold lg:text-6xl xl:text-7xl lg:tracking-tight">Igreja Unidos no Senhor</h1>
       <p class="text-lg mt-4 max-w-xl text-slate-600">
         <br />
         Servindo a Deus e as pessoas.
