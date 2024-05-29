@@ -1,14 +1,20 @@
 <script setup>
 import { useMyAuthStore } from '~/store/auth';
 
+const links = [
+  { href: '/membros', text: 'Membros' },
+  { href: '/biblioteca', text: 'Biblioteca' },
+  { href: '/biblioteca/cadastro', text: 'Registrar Livros', auth: true },
+];
+
 const authStore = useMyAuthStore();
-const { show_login_window } = storeToRefs(authStore);
+const { show_login_window, authenticated } = storeToRefs(authStore);
 </script>
 <template>
-  <main class="grid lg:grid-cols-2 place-items-center pt-16 pb-8 md:pt-8">
-    <div class="pt-5 md:p-24 order-1 sm:block sm:order-1 md:order-1 md:block z-0">
+  <main class="grid place-items-center pt-16 pb-8 md:pt-8 lg:grid-cols-2">
+    <div class="z-0 order-1 pt-5 sm:block sm:order-1 md:p-24 md:order-1 md:block">
       <img
-        class="hover:scale-105 rounded-full transition-transform transform sm:hover:scale-125"
+        class="rounded-full transition-transform transform hover:scale-105 sm:hover:scale-125"
         src="~/assets/img/logo.png"
         alt="Starship starts the engine"
         loading="eager"
@@ -17,22 +23,21 @@ const { show_login_window } = storeToRefs(authStore);
         height="400"
       />
     </div>
-    <!-- This div should be hidden if show_login_window is false -->
-    <div v-if="show_login_window" class="fixed z-10 inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <!-- Render here the window of login -->
+    <div v-if="show_login_window" class="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
       <LandingLogin></LandingLogin>
     </div>
     <div>
-      <h1 class="text-5xl lg:text-6xl xl:text-7xl font-bold lg:tracking-tight">Igreja Bíblica Unidos no Senhor</h1>
-      <p class="text-lg mt-4 text-slate-600 max-w-xl">
+      <h1 class="text-5xl font-bold lg:text-6xl xl:text-7xl lg:tracking-tight">Igreja Bíblica Unidos no Senhor</h1>
+      <p class="text-lg mt-4 max-w-xl text-slate-600">
         Amando a Deus e as pessoas<br />
         Servindo a Deus e as pessoas.
       </p>
-      <div class="mt-6 flex flex-col sm:flex-row gap-3">
+      <div class="flex mt-6 gap-3 flex-col sm:flex-row">
         <template v-for="link in links">
           <a
             :href="link.href"
-            class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 px-5 py-2.5 bg-white border-2 border-black hover:bg-gray-100 text-black"
+            class="px-5 py-2.5 text-black bg-white border-2 border-black rounded text-center transition hover:bg-gray-100 focus-visible:ring-2 ring-offset-2 ring-gray-200"
+            :class="{ hidden: link.auth && !authenticated }"
             >{{ link.text }}</a
           >
         </template>

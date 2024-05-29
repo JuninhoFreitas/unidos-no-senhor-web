@@ -1,4 +1,3 @@
-
 <!-- /** 
  * In the top of the page should have a title "Cadastro de Membros"
  * Above the form should have 3 cards with the following information:
@@ -28,7 +27,7 @@ definePageMeta({
   isProtected: true,
 });
 useHead({
-  title: "Unidos no Senhor | Membros",
+  title: 'Unidos no Senhor | Membros',
 });
 import { columnsTableMembers } from '@/constants/tableMembers';
 import { useMemberStore } from '~/store/member';
@@ -46,28 +45,29 @@ const q = ref('');
 const { members } = storeToRefs(membersStore);
 membersStore.listMembers();
 
-function deleteMembers(){
-  selected.value.forEach(async (row)=>{
-    await membersStore.deleteMember(row.id)
-  })
+function deleteMembers() {
+  selected.value.forEach(async (row) => {
+    await membersStore.deleteMember(row.id);
+  });
 }
 
 const items = (row) => [
-  [{
-    label: 'Delete',
-    icon: 'i-heroicons-trash-20-solid',
-    click: () => membersStore.deleteMember(row.id)
-  },
-  {
-    label: 'Edit',
-    icon: 'i-heroicons-pencil-20-solid',
-    click: () => {
-      memberToUpdate.value = row;
-      opened.value.dialogs.updatedMember = true;
-    }
-  }
-]
-]
+  [
+    {
+      label: 'Delete',
+      icon: 'i-heroicons-trash-20-solid',
+      click: () => membersStore.deleteMember(row.id),
+    },
+    {
+      label: 'Edit',
+      icon: 'i-heroicons-pencil-20-solid',
+      click: () => {
+        memberToUpdate.value = row;
+        opened.value.dialogs.updatedMember = true;
+      },
+    },
+  ],
+];
 
 const filteredRows = computed(() => {
   if (!q.value) {
@@ -100,7 +100,7 @@ const filteredRows = computed(() => {
           <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="registerIsOpen = false" />
         </div>
       </template>
-      <MemberRegisterMember action="create" ></MemberRegisterMember>
+      <MemberRegisterMember action="create"></MemberRegisterMember>
       <Placeholder class="h-full" />
     </UCard>
   </UModal>
@@ -118,32 +118,47 @@ const filteredRows = computed(() => {
       <template #header>
         <div class="flex items-center justify-between">
           <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">Atualizar Membro</h3>
-          <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="opened.dialogs.updatedMember = false" />
+          <UButton
+            color="gray"
+            variant="ghost"
+            icon="i-heroicons-x-mark-20-solid"
+            class="-my-1"
+            @click="opened.dialogs.updatedMember = false"
+          />
         </div>
       </template>
-    <MemberRegisterMember action="update" :member-to-update="memberToUpdate"></MemberRegisterMember>
+      <MemberRegisterMember action="update" :member-to-update="memberToUpdate"></MemberRegisterMember>
       <Placeholder class="h-full" />
     </UCard>
   </UModal>
 
-  <div class="max-w-screen-2xl mx-auto px-5">
+  <div class="max-w-screen-2xl mx-auto h-[calc(100vh-10rem)] px-5">
     <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
       <UInput v-model="q" placeholder="Filtre membros..." />
       <UButton label="Cadastrar membro" class="ml-3" @click="registerIsOpen = true" />
       <UButton label="Excluir" class="ml-3 bg-red-600" @click="deleteMembers" />
     </div>
-    <UTable  v-model="selected" :rows="filteredRows" :columns="columnsTableMembers" class="border ring-1 ring-green-200 focus:ring-primary-500" >
-      <template #name-data="{ row }">
-      <span :class="[selected.find(person => person.id === row.id) && 'text-primary-500 dark:text-primary-400']">{{ row.nome }}</span>
-    </template>
+    <div class="h-full overflow-auto">
+      <UTable
+        v-model="selected"
+        :rows="filteredRows"
+        :columns="columnsTableMembers"
+        class="border ring-1 ring-green-200 focus:ring-primary-500 h-full w-full"
+      >
+        <template #name-data="{ row }">
+          <span :class="[selected.find((person) => person.id === row.id) ? 'text-primary-500 dark:text-primary-400' : '']">{{
+            row.nome
+          }}</span>
+        </template>
 
-    <template #actions-data="{ row }">
-      <UDropdown :items="items(row)">
-        <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
-      </UDropdown>
-    </template>
-  </UTable>
+        <template #actions-data="{ row }">
+          <UDropdown :items="items(row)">
+            <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+          </UDropdown>
+        </template>
+      </UTable>
+    </div>
   </div>
 </template>
 
-<style></style>~/constants/tableMembers
+<style></style>
