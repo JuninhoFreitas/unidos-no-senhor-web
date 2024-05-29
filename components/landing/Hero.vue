@@ -1,22 +1,11 @@
 <script setup>
 import { useMyAuthStore } from '~/store/auth';
 
-const authStore = useMyAuthStore()
-const { user, show_login_window, is_authenticated } = storeToRefs(authStore)
+const authStore = useMyAuthStore();
+const { show_login_window } = storeToRefs(authStore);
 </script>
 <template>
   <main class="grid lg:grid-cols-2 place-items-center pt-16 pb-8 md:pt-8">
-    <!-- <div class="p-24 md:order-1 hidden md:block">
-      <img
-        class="rounded-full transition-transform transform hover:scale-125"
-        src="~/assets/img/logo.png"
-        alt="Starship starts the engine"
-        loading="eager"
-        format="avif"
-        width="400"
-        height="400"
-      />
-    </div> -->
     <div class="pt-5 md:p-24 order-1 sm:block sm:order-1 md:order-1 md:block z-0">
       <img
         class="hover:scale-105 rounded-full transition-transform transform sm:hover:scale-125"
@@ -40,9 +29,13 @@ const { user, show_login_window, is_authenticated } = storeToRefs(authStore)
         Servindo a Deus e as pessoas.
       </p>
       <div class="mt-6 flex flex-col sm:flex-row gap-3">
-        <a href="/membros" class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 px-5 py-2.5 bg-white border-2 border-black hover:bg-gray-100 text-black ">Membros</a>
-        <a href="/biblioteca" class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 px-5 py-2.5 bg-white border-2 border-black hover:bg-gray-100 text-black ">Biblioteca</a>
-        <a href="/biblioteca/cadastro" class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 px-5 py-2.5 bg-white border-2 border-black hover:bg-gray-100 text-black ">Registrar Livros</a>
+        <template v-for="link in links">
+          <a
+            :href="link.href"
+            class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 px-5 py-2.5 bg-white border-2 border-black hover:bg-gray-100 text-black"
+            >{{ link.text }}</a
+          >
+        </template>
       </div>
     </div>
   </main>
