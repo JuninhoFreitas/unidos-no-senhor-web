@@ -3,7 +3,7 @@ definePageMeta({
   layout: 'landing',
 });
 useHead({
-  title: "Unidos no Senhor | Sobre Nós",
+  title: 'Unidos no Senhor | Sobre Nós',
 });
 const PrTiagoW =
   'https://static.wixstatic.com/media/f6cfc7_ec84b04cf4a44a2593636a0157e6800e~mv2.jpg/v1/fill/w_329,h_329,al_c,lg_1,q_80,enc_auto/f6cfc7_ec84b04cf4a44a2593636a0157e6800e~mv2.jpg';
@@ -50,33 +50,27 @@ const team = [
     </LandingSectionhead>
 
     <div class="flex flex-col whitespace-break-spaces gap-3 mx-auto max-w-4xl mt-16">
-      <h2 class="font-bold text-3xl text-gray-800">Nossa História</h2>
-      <p class="text-lg leading-relaxed font-light text-slate-900">
+      <h2 class="font-bold text-3xl text-black">Nossa História</h2>
+      <p class="text-lg leading-loose font-sans text-black">
         A Igreja Bíblica Unidos no Senhor foi fundada em 1980 por um grupo de jovens cristãos que tinha duas preocupações principais: manter
-        a sã doutrina e ser uma comunidade amorosa.<br />
-        E foi com estes princípios sempre em mente que nossa igreja cresceu, e hoje não se reúne mais na pequena sala alugada no Centro da
-        cidade.<br /><br />
-        Com a preocupação de levar a mensagem da verdade para as pessoas e transmiti-las no contexto de mundo atual, considerando-as dentro
-        da sua cultura e individualidade, temos nos reinventado a cada dia, buscando conhecer as pessoas, para que possam não somente ser
-        apoiadas (pastoreadas), mas também que sirvam a Cristo, utilizando seus dons e talentos.
-        <br><br>Este é o motivo pelo qual fazemos o que
-        fazemos. Em outras palavras, pode-se dizer que o nosso grande objetivo é proclamar o Evangelho, sendo uma comunidade amorosa,
-        conduzindo pessoas a Cristo através de relacionamentos pessoais, acolhendo-as na família da fé e discipulando-as para a maturidade!
-        <br><br>
-        Desde 1980 muitas coisas mudaram no Brasil e no mundo, assim como na própria Unidos. As pessoas de hoje agem e pensam diferente. Mas
-        isto certamente não mudou: o nosso zelo pela sã doutrina e o nosso amor pelas pessoas.
-        <br><br>
-        Se deseja conhecer-nos melhor, navegue em
-        nosso site, agende uma visita ou apareça em alguma de nossas reuniões ou cultos semanais.
-        <br><br>
+        a sã doutrina e ser uma comunidade amorosa. <br />E foi com estes princípios sempre em mente que nossa igreja cresceu, e hoje não se
+        reúne mais na pequena sala alugada no Centro da cidade. <br /><br />Com a preocupação de levar a mensagem da verdade para as pessoas
+        e transmiti-las no contexto de mundo atual, considerando-as dentro da sua cultura e individualidade, temos nos reinventado a cada
+        dia, buscando conhecer as pessoas, para que possam não somente ser apoiadas (pastoreadas), mas também que sirvam a Cristo,
+        utilizando seus dons e talentos. <br /><br />Este é o motivo pelo qual fazemos o que fazemos. Em outras palavras, pode-se dizer que
+        o nosso grande objetivo é proclamar o Evangelho, sendo uma comunidade amorosa, conduzindo pessoas a Cristo através de
+        relacionamentos pessoais, acolhendo-as na família da fé e discipulando-as para a maturidade! <br /><br />Desde 1980 muitas coisas
+        mudaram no Brasil e no mundo, assim como na própria Unidos. As pessoas de hoje agem e pensam diferente. Mas isto certamente não
+        mudou: o nosso zelo pela sã doutrina e o nosso amor pelas pessoas.
+
+        <br /><br />Se deseja conhecer-nos melhor, navegue em nosso site, agende uma visita ou apareça em alguma de nossas reuniões ou
+        cultos semanais.
         <!-- Bold text -->
-        <h1 class="mx-auto">
-          <strong>
-          Você é nosso convidado!
-          </strong>
-        </h1>
-          
+        <span> </span>
       </p>
+      <h1 class="mx-auto mt-3 text-2xl">
+        <strong> Você é nosso convidado! </strong>
+      </h1>
     </div>
     <div class="flex flex-col gap-3 mx-auto max-w-4xl mt-16">
       <h2 class="font-bold text-3xl text-gray-800">Forma de Governo</h2>
@@ -91,7 +85,7 @@ const team = [
         etc.
       </p>
     </div>
-    <div class="grid md:grid-cols-3 gap-10 mx-auto max-w-4xl mt-12">
+    <div class="grid md:grid-cols-3 gap-10 mx-auto max-w-4xl mt-12 pb-24">
       <div v-for="item of team" class="group">
         <div class="w-full aspect-square">
           <img
@@ -109,25 +103,6 @@ const team = [
           <h3 class="text-sm text-slate-500">{{ item.title }}</h3>
         </div>
       </div>
-      <!-- {
-        team.map((item) => (
-          <div class="group">
-            <div class="w-full aspect-square">
-              <Image
-                {...item.avatar}
-                format="avif"
-                alt="Team"
-                class="w-full h-full object-cover rounded transition  group-hover:-translate-y-1 group-hover:shadow-xl"
-              />
-            </div>
-
-            <div class="mt-4 text-center">
-              <h2 class="text-lg text-gray-800"> {item.name}</h2>
-              <h3 class="text-sm text-slate-500"> {item.title}</h3>
-            </div>
-          </div>
-        ))
-      } -->
     </div>
   </LandingContainer>
 </template>

@@ -1,5 +1,10 @@
 <script setup>
 import { useMyAuthStore } from '~/store/auth';
+const open = ref(false);
+const authStore = useMyAuthStore();
+const { show_login_window, authenticated } = storeToRefs(authStore);
+authenticated.value = useCookie('token').value ? true : false;
+
 const menuitems = [
   {
     title: 'Pagina Inicial',
@@ -17,20 +22,13 @@ const menuitems = [
     title: 'Sobre',
     path: '/sobre',
   },
+  authenticated.value
+    ? {
+        title: 'Lista de Presença',
+        path: '/listaDePresenca',
+      }
+    : {},
 ];
-
-const open = ref(false);
-
-const authStore = useMyAuthStore();
-const { show_login_window, authenticated } = storeToRefs(authStore);
-authenticated.value = useCookie('token').value ? true : false;
-
-if (authenticated.value) {
-  menuitems.push({
-    title: 'Lista de Presença',
-    path: '/listaDePresenca',
-  });
-}
 
 const openLogin = () => {
   show_login_window.value = true;
@@ -78,24 +76,16 @@ function logoutAndRefresh() {
           </li>
         </ul>
         <div class="lg:hidden flex items-center mt-3 gap-4">
-          <!-- <LandingLink href="#" styleName="muted" block size="md">Log in</LandingLink> -->
           <div v-if="!authenticated" class="lg:flex items-center gap-4">
-            <!-- When click log in, must render <LandingLogin/> -->
             <LandingLink @click="openLogin" href="#" block size="md">Log in</LandingLink>
-            <!-- Button to logout -->
           </div>
-          <!-- Hide this div if  "is_authenticated" is false -->
           <LandingLink v-else-if="authenticated" @click="logoutAndRefresh" href="#" size="md">Log out</LandingLink>
         </div>
       </nav>
       <div>
-        <!-- Hide this div if  "is_authenticated" is true -->
         <div v-if="!authenticated" class="hidden lg:flex items-center gap-4">
-          <!-- When click log in, must render <LandingLogin/> -->
           <LandingLink @click="openLogin" href="#" size="md">Log in</LandingLink>
-          <!-- Button to logout -->
         </div>
-        <!-- Hide this div if  "is_authenticated" is false -->
         <LandingLink v-else-if="authenticated" @click="logoutAndRefresh" href="#" size="md" class="hidden lg:flex">Log out</LandingLink>
       </div>
     </header>

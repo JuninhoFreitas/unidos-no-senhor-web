@@ -82,16 +82,15 @@ watch(debouncedSearch, async () => {
         class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 px-5 py-2.5 bg-white border-2 border-black hover:bg-gray-100 text-black"
         >Gerenciar Livros</a
       >
-      <!-- <LandingLink size="lg" class="outline" rel="noopener" to="/biblioteca/cadastro" target="_blank">Registrar Livros</LandingLink> -->
     </div>
 
     <div v-if="pending">Loading tracks...</div>
     <div v-else-if="error">{{ error.message }}</div>
     <div
       v-else
-      class="grid gap-1 mx-auto grid-cols-2 mt-12 sm:grid-cols-2 md:grid-cols-3 md:max-w-screen-lg xl:grid-cols-5 xl:max-w-screen-2xl"
+      class="grid gap-1 mx-auto grid-cols-1 mt-12 sm:grid-cols-2 md:grid-cols-3 md:max-w-screen-lg xl:grid-cols-5 xl:max-w-screen-2xl"
     >
-      <LandingBook v-for="item of books" :book="item" :key="item.id" />
+      <LandingBook v-for="item of books" :book="item" :key="item.id" class="w-full max-w-sm" />
     </div>
   </LandingContainer>
 </template>

@@ -109,34 +109,35 @@ const filteredRows = computed(() => {
     </UCard>
   </UModal>
 
-  <div class="max-w-screen-2xl mx-auto px-5">
-    <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
-      <UInput v-model="q" placeholder="Filtre Livros..." />
-      <UButton label="Cadastrar Livro" class="ml-3" @click="registerIsOpen = true" />
-      <UButton label="Excluir" class="ml-3 bg-red-600" @click="deleteMembers" />
+  <div class="max-w-screen-2xl mx-auto px-5 h-[calc(100vh-10rem)]">
+    <div class="h-full">
+      <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
+        <UInput v-model="q" placeholder="Filtre Livros..." />
+        <UButton label="Cadastrar Livro" class="ml-3" @click="registerIsOpen = true" />
+        <UButton label="Excluir" class="ml-3 bg-red-600" @click="deleteMembers" />
+      </div>
+      <UTable
+        v-model="selected"
+        :rows="filteredRows"
+        :columns="columnsTableBooks"
+        class="border ring-1 ring-green-200 focus:ring-primary-500 h-full overflow-auto"
+      >
+        <template #titulo-data="{ row }">
+          <span :class="[selected.find((book) => book.id === row.id) && 'text-primary-500 dark:text-primary-400']">{{ row.titulo }}</span>
+          <!-- When book have the property "reservado" false  should format the field "reservado" to the text color red-->
+        </template>
+        <template #reservado-data="{ row }">
+          <span :class="[row.reservado ? 'text-gray-500 dark:text-white-400' : 'text-primary-500 dark:text-primary-400']">{{
+            row.reservado ? 'Sim' : 'Não'
+          }}</span>
+        </template>
+        <template #actions-data="{ row }">
+          <UDropdown :items="items(row)">
+            <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+          </UDropdown>
+        </template>
+      </UTable>
     </div>
-    <UTable
-      v-model="selected"
-      :rows="filteredRows"
-      :columns="columnsTableBooks"
-      class="border ring-1 ring-green-200 focus:ring-primary-500"
-    >
-      <template #titulo-data="{ row }">
-        <span :class="[selected.find((book) => book.id === row.id) && 'text-primary-500 dark:text-primary-400']">{{
-          row.titulo
-        }}</span>
-        <!-- When book have the property "reservado" false  should format the field "reservado" to the text color red-->
-      </template>
-      <template #reservado-data="{ row }">
-        <span :class="[row.reservado ? 'text-gray-500 dark:text-white-400' : 'text-primary-500 dark:text-primary-400']">{{ row.reservado ? 'Sim' : 'Não' }}</span>
-      </template>
-
-      <template #actions-data="{ row }">
-        <UDropdown :items="items(row)">
-          <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
-        </UDropdown>
-      </template>
-    </UTable>
   </div>
 </template>
 
