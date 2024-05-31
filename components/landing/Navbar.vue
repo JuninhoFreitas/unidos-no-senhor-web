@@ -1,5 +1,10 @@
 <script setup>
 import { useMyAuthStore } from '~/store/auth';
+const open = ref(false);
+const authStore = useMyAuthStore();
+const { show_login_window, authenticated } = storeToRefs(authStore);
+authenticated.value = useCookie('token').value ? true : false;
+
 const menuitems = [
   {
     title: 'Pagina Inicial',
@@ -17,20 +22,13 @@ const menuitems = [
     title: 'Sobre',
     path: '/sobre',
   },
+  authenticated.value
+    ? {
+        title: 'Lista de Presença',
+        path: '/listaDePresenca',
+      }
+    : {},
 ];
-
-const open = ref(false);
-
-const authStore = useMyAuthStore();
-const { show_login_window, authenticated } = storeToRefs(authStore);
-authenticated.value = useCookie('token').value ? true : false;
-
-if (authenticated.value) {
-  menuitems.push({
-    title: 'Lista de Presença',
-    path: '/listaDePresenca',
-  });
-}
 
 const openLogin = () => {
   show_login_window.value = true;
