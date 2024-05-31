@@ -109,8 +109,8 @@ const filteredRows = computed(() => {
     </UCard>
   </UModal>
 
-  <div class="max-w-screen-2xl mx-auto px-5 h-[calc(100vh-8rem)] overflow-auto">
-    <div class="h-full overflow-auto">
+  <div class="max-w-screen-2xl mx-auto px-5 h-[calc(100vh-10rem)]">
+    <div class="h-full">
       <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
         <UInput v-model="q" placeholder="Filtre Livros..." />
         <UButton label="Cadastrar Livro" class="ml-3" @click="registerIsOpen = true" />
@@ -120,7 +120,7 @@ const filteredRows = computed(() => {
         v-model="selected"
         :rows="filteredRows"
         :columns="columnsTableBooks"
-        class="border ring-1 ring-green-200 focus:ring-primary-500 h-full w-full overflow-auto"
+        class="border ring-1 ring-green-200 focus:ring-primary-500 h-full overflow-auto"
       >
         <template #titulo-data="{ row }">
           <span :class="[selected.find((book) => book.id === row.id) && 'text-primary-500 dark:text-primary-400']">{{ row.titulo }}</span>
