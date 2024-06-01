@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { columnsTableAttendance } from '@/constants/tableAttendance';
 import { useAttendanceStore } from '~/store/attendance';
 import { useEventsStore } from '~/store/events';
 import { useOpenedStore } from '~/store/openeds';
@@ -53,20 +52,14 @@ const filteredRows = computed(() => {
       <UInput v-model="q" placeholder="Filtre Pessoas..." />
       <UButton label="+" class="ml-3" @click="console.log(selectedParticipants)" />
     </div>
-    <UTable
-      v-model="selectedParticipants"
-      :rows="filteredRows"
-      :columns="columnsTableAttendance"
-      class="border ring-1 ring-green-200 focus:ring-primary-500"
-      style="height: 70vh"
-      @select="select"
-    >
-      <template #nome-data="{ row }">
-        <span :class="[selectedParticipants.find((person) => person.id === row.id) && 'text-primary-500 dark:text-primary-400']">{{
-          row.nome
-        }}</span>
-      </template>
-    </UTable>
+    <div v-for="person in filteredRows" :key="person.id" class="flex justify-between items-center border-b py-2">
+      <span :class="[selectedParticipants.find((p) => p.id === person.id) && 'text-primary-500 dark:text-primary-400']">
+        {{ person.nome }}
+      </span>
+      <UButton @click="select(person)">
+        {{ selectedParticipants.find((p) => p.id === person.id) ? 'Desmarcar' : 'Presente' }}
+      </UButton>
+    </div>
     <UModal v-model="opened.dialogs.updatedParticipant">
       <!-- Create a alert to success -->
       <UAlert
