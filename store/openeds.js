@@ -7,6 +7,7 @@ export const useOpenedStore = defineStore('opened', () => {
       updatedMember: false,
       updatedBook: false,
       updatedParticipant: false,
+      registerMember: false,
     },
     windows: {
       addBook: false,

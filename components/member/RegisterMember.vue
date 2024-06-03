@@ -15,7 +15,7 @@ const validateDate = (date) => {
 
 const validate = (state: any): FormError[] => {
   const errors = [];
-  if(state.email === "") state.email = null;
+  if (state.email === '') state.email = null;
   if (!state.nome) errors.push({ path: 'nome', message: 'Required' });
   if (state.dataNascimento && !validateDate(state.dataNascimento))
     errors.push({ path: 'dataNascimento', message: 'Formato de data inválido, exemplo: 31/12/2024' });
@@ -88,6 +88,7 @@ defineShortcuts({
     whenever: [hand],
     handler: () => {
       opened.value.dialogs.updatedMember = false;
+      opened.value.dialogs.registerMember = false;
     },
   },
 });

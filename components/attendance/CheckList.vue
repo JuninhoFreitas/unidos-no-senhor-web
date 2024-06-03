@@ -43,6 +43,13 @@ const filteredRows = computed(() => {
     });
   });
 });
+
+function showCreateMemberModal() {
+  opened.value.dialogs.registerMember = true;
+}
+function closeCreateMemberModal() {
+  opened.value.dialogs.registerMember = false;
+}
 </script>
 
 <template>
@@ -50,13 +57,23 @@ const filteredRows = computed(() => {
     <h1 class="text-3xl font-bold text-center mt-5">{{ selectedEvent.nome }}</h1>
     <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
       <UInput v-model="q" placeholder="Filtre Pessoas..." />
-      <UButton label="+" class="ml-3" @click="console.log(selectedParticipants)" />
+      <UButton label="+" class="ml-3" @click="showCreateMemberModal()" id="createMemberBtn" />
+      <UModal v-model="opened.dialogs.registerMember">
+        <MemberCreateSmall
+          :action="'create'"
+          :closeFunction="
+            () => {
+              closeCreateMemberModal();
+            }
+          "
+        />
+      </UModal>
     </div>
     <div v-for="person in filteredRows" :key="person.id" class="flex justify-between items-center border-b py-2">
       <span :class="[selectedParticipants.find((p) => p.id === person.id) && 'text-primary-500 dark:text-primary-400']">
         {{ person.nome }}
       </span>
-      <UButton @click="select(person)">
+      <UButton :color="selectedParticipants.find((p) => p.id === person.id) ? 'red' : 'default'" @click="select(person)">
         {{ selectedParticipants.find((p) => p.id === person.id) ? 'Desmarcar' : 'Presente' }}
       </UButton>
     </div>
