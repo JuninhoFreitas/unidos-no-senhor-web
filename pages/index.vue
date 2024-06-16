@@ -1,4 +1,3 @@
-<!-- Define head title as "Pagina Inicial" -->
 <script setup>
 definePageMeta({
   layout: 'landing',
