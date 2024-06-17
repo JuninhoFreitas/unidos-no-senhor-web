@@ -15,7 +15,6 @@ onMounted(() => {
     //reset the is-invalid class from all inputs
     form.querySelectorAll('.is-invalid').forEach((el) => el.classList.remove('is-invalid'));
   }
-  //create a function to put a message in result and show it, needs to have a parameter to when the message is an error or not
   function setResult(message, isError) {
     result.style = 'flex justify-center items-center';
     result.classList.add(isError ? 'text-red-500' : 'text-green-500');
@@ -25,11 +24,9 @@ onMounted(() => {
   form.addEventListener('submit', function (e) {
     resetResult();
     e.preventDefault();
-    //validate if the year is a number
     if(isNaN(form.querySelector('input[name="year"]').value)){
       form.querySelector('input[name="year"]').classList.add('is-invalid');
       form.querySelector('input[name="year"]').focus();
-      //show a message saying that the year must be a number
       setResult("O ano de impressão deve ser um número!", true);
       return;
     }
@@ -143,10 +140,8 @@ onMounted(() => {
       />
       <div class="empty-feedback invalid-feedback text-red-400 text-sm mt-1">Por favor, informe a observação do livro.</div>
     </div>
-    <!-- Create an input with the name available and it should be a switch  -->
     <div class="mb-5">
       <label for="available" class="text-gray-800">Disponível</label>
-      <!-- Create a beautiful style for this checkbox -->
       <input
         type="checkbox"
         class="w-5 h-5 rounded-md border-2 border-gray-300"
@@ -159,7 +154,6 @@ onMounted(() => {
     <div id="result" class="mt-3 text-center"></div>
   </form>
 </template>
-
 <style>
 .invalid-feedback,
 .empty-feedback {
