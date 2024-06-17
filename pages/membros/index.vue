@@ -1,24 +1,3 @@
-<!-- /** 
- * In the top of the page should have a title "Cadastro de Membros"
- * Above the form should have 3 cards with the following information:
- * - Total de Membros
- * - Membros Ativos
- * - Membros Inativos
- * 
- * The page should have a button to list all members
- * The page should have a button to list all members that are active
- * The page should have a button to list all members that are inactive
- * 
- * The page should have a left menu with the following options:
- * - Pagina Inicial
- * - Biblioteca
- * - Membros
- *   - Cadastro
- *   - Listagem
- * This menu should be hidden in mobile
- * 
- * 
- * **/ -->
 <script lang="ts" setup>
 definePageMeta({
   layout: 'landing',
@@ -47,22 +26,26 @@ membersStore.listMembers();
 
 function deleteMembers() {
   selected.value.forEach(async (row) => {
-    await membersStore.deleteMember(row.id);
+    await membersStore.deleteMember((row as { id: any }).id);
   });
 }
 
-const items = (row) => [
+const items = (row: { id: any; } | null) => [
   [
     {
       label: 'Delete',
       icon: 'i-heroicons-trash-20-solid',
-      click: () => membersStore.deleteMember(row.id),
+      click: () => {
+        if (row) {
+          membersStore.deleteMember(row.id);
+        }
+      },
     },
     {
       label: 'Edit',
       icon: 'i-heroicons-pencil-20-solid',
       click: () => {
-        memberToUpdate.value = row;
+        memberToUpdate.value = row as { id: any } | null;
         opened.value.dialogs.updatedMember = true;
       },
     },
