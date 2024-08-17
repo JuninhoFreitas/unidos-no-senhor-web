@@ -5,7 +5,7 @@ export const useMemberStore = defineStore('members', () => {
   const members = ref([]);
 
   const createMember = async (membro) => {
-    const response = await fetch(`${config.public.baseUrl}/membro`, {
+    const response = await fetch(`${config.public.baseUrl}/members`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -17,18 +17,19 @@ export const useMemberStore = defineStore('members', () => {
   };
 
   const listMembers = async () => {
-    const response = await fetch(`${config.public.baseUrl}/membro`, {
+    const response = await fetch(`${config.public.baseUrl}/members?limit=1000`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${useCookie('token').value}`,
       },
     });
-    members.value = await response.json();
+    const { data } = await response.json();
+    members.value = data;
   };
 
   const deleteMember = async (id) => {
-    await fetch(`${config.public.baseUrl}/membro/${id}`, {
+    await fetch(`${config.public.baseUrl}/members/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -43,7 +44,7 @@ export const useMemberStore = defineStore('members', () => {
     const { id, ...updateBody } = membro;
     const json = JSON.stringify(updateBody);
     console.log('MEMBRO ', membro)
-    return await fetch(`${config.public.baseUrl}/membro/${id}`, {
+    return await fetch(`${config.public.baseUrl}/members/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

@@ -7,7 +7,7 @@ export const useEventsStore = defineStore('events', () => {
 
   const createEvent = async (body) => {
     console.log(body, 'body');
-    const response = await fetch(`${config.public.baseUrl}/eventos`, {
+    const response = await fetch(`${config.public.baseUrl}/events`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -15,20 +15,23 @@ export const useEventsStore = defineStore('events', () => {
       },
       body: JSON.stringify(body),
     });
-    return response;
+    console.log(response, 'response');
+    const data = await response.json();
+    console.log(data, 'data');
+    return data;
   };
 
   const listEvents = async () => {
-    const response = await fetch(`${config.public.baseUrl}/eventos`);
-    const json = await response.json();
-    console.log(json);
-    events.value = json;
+    // TODO: Add support to nextPage and previousPage
+    const response = await fetch(`${config.public.baseUrl}/events`);
+    const { data } = await response.json();
+    events.value = data;
     return events.value;
   };
 
   const updateEvent = async (body) => {
     const { id, ...request } = body;
-    const response = await fetch(`${config.public.baseUrl}/eventos/${id}`, {
+    const response = await fetch(`${config.public.baseUrl}/events/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -40,7 +43,7 @@ export const useEventsStore = defineStore('events', () => {
   };
 
   const deleteEvent = async (id) => {
-    await fetch(`${config.public.baseUrl}/eventos/${id}`, {
+    await fetch(`${config.public.baseUrl}/events/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${useCookie('token').value}`,

@@ -9,7 +9,7 @@
   "typescript.suggest.autoImports": false,
   "volar.experimental.templateInterpolationService": true,
   "volar.vueserver.useSecondServer": true,
-  "debug.javascript.autoAttachFilter": "onlyWithFlag",
+  "debug.javascript.autoAttachFilter": "smart",
   "tailwindCSS.validate": false,
   "tailwindCSS.lint.recommendedVariantOrder": "ignore",
   "tailwindCSS.codeActions": false,

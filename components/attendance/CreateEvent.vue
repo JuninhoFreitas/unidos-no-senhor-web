@@ -40,10 +40,10 @@ const openCreateEvent = () => {
 const rawDate = ref(null);
 const formattedDate = computed(() => {
   if (rawDate.value) {
-    const date = new Date(rawDate.value);
-    return date.toLocaleDateString('pt-BR');
+    const date = new Date(rawDate.value).toISOString();
+    return date
   }
-  return new Date().toLocaleDateString('pt-BR');
+  return new Date().toISOString();
 });
 </script>
 

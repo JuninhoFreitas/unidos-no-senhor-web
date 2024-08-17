@@ -17,5 +17,7 @@ export const useOpenedStore = defineStore('opened', () => {
     },
   });
 
-  return { opened };
+  const nome = ref('João');
+
+  return { opened, nome };
 });

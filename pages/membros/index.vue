@@ -1,4 +1,3 @@
-
 <!-- /** 
  * In the top of the page should have a title "Cadastro de Membros"
  * Above the form should have 3 cards with the following information:
@@ -24,7 +23,7 @@
 definePageMeta({
   layout: 'landing',
   middleware: 'auth',
-  roles: ['admin'],
+  roles: ['Admin'],
   isProtected: true,
 });
 useHead({
@@ -46,8 +45,8 @@ const q = ref('');
 const { members } = storeToRefs(membersStore);
 membersStore.listMembers();
 
-function deleteMembers(){
-  selected.value.forEach(async (row)=>{
+function deleteMembers() {
+  selected.value.forEach(async (row) => {
     await membersStore.deleteMember(row.id)
   })
 }
@@ -66,7 +65,7 @@ const items = (row) => [
       opened.value.dialogs.updatedMember = true;
     }
   }
-]
+  ]
 ]
 
 const filteredRows = computed(() => {
@@ -84,44 +83,42 @@ const filteredRows = computed(() => {
 
 <template>
   <UModal v-model="registerIsOpen" fullscreen>
-    <UCard
-      :ui="{
-        base: 'h-full flex flex-col',
-        rounded: '',
-        divide: 'divide-y divide-gray-100 dark:divide-gray-800',
-        body: {
-          base: 'grow',
-        },
-      }"
-    >
+    <UCard :ui="{
+      base: 'h-full flex flex-col',
+      rounded: '',
+      divide: 'divide-y divide-gray-100 dark:divide-gray-800',
+      body: {
+        base: 'grow',
+      },
+    }">
       <template #header>
         <div class="flex items-center justify-between">
           <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">Cadastro de Membros</h3>
-          <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="registerIsOpen = false" />
+          <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
+            @click="registerIsOpen = false" />
         </div>
       </template>
-      <MemberRegisterMember action="create" ></MemberRegisterMember>
+      <MemberRegisterMember action="create"></MemberRegisterMember>
       <Placeholder class="h-full" />
     </UCard>
   </UModal>
   <UModal v-model="opened.dialogs.updatedMember" fullscreen>
-    <UCard
-      :ui="{
-        base: 'h-full flex flex-col',
-        rounded: '',
-        divide: 'divide-y divide-gray-100 dark:divide-gray-800',
-        body: {
-          base: 'grow',
-        },
-      }"
-    >
+    <UCard :ui="{
+      base: 'h-full flex flex-col',
+      rounded: '',
+      divide: 'divide-y divide-gray-100 dark:divide-gray-800',
+      body: {
+        base: 'grow',
+      },
+    }">
       <template #header>
         <div class="flex items-center justify-between">
           <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">Atualizar Membro</h3>
-          <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="opened.dialogs.updatedMember = false" />
+          <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1"
+            @click="opened.dialogs.updatedMember = false" />
         </div>
       </template>
-    <MemberRegisterMember action="update" :member-to-update="memberToUpdate"></MemberRegisterMember>
+      <MemberRegisterMember action="update" :member-to-update="memberToUpdate"></MemberRegisterMember>
       <Placeholder class="h-full" />
     </UCard>
   </UModal>
@@ -132,18 +129,20 @@ const filteredRows = computed(() => {
       <UButton label="Cadastrar membro" class="ml-3" @click="registerIsOpen = true" />
       <UButton label="Excluir" class="ml-3 bg-red-600" @click="deleteMembers" />
     </div>
-    <UTable  v-model="selected" :rows="filteredRows" :columns="columnsTableMembers" class="border ring-1 ring-green-200 focus:ring-primary-500" >
+    <UTable v-model="selected" :rows="filteredRows" :columns="columnsTableMembers"
+      class="border ring-1 ring-green-200 focus:ring-primary-500">
       <template #name-data="{ row }">
-      <span :class="[selected.find(person => person.id === row.id) && 'text-primary-500 dark:text-primary-400']">{{ row.nome }}</span>
-    </template>
+        <span :class="[selected.find(person => person.id === row.id) && 'text-red-800 dark:text-red-400']">{{ row.nome
+          }}</span>
+      </template>
 
-    <template #actions-data="{ row }">
-      <UDropdown :items="items(row)">
-        <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
-      </UDropdown>
-    </template>
-  </UTable>
+      <template #actions-data="{ row }">
+        <UDropdown :items="items(row)">
+          <UButton color="gray" variant="ghost" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+        </UDropdown>
+      </template>
+    </UTable>
   </div>
 </template>
 
-<style></style>~/constants/tableMembers
+<style></style>

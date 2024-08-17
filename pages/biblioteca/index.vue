@@ -7,10 +7,12 @@ useHead({
 });
 
 import { useDebounce } from '@vueuse/core';
-const config = useRuntimeConfig();
 const authenticated = useCookie('token')?.value ? true : false;
 
-const { data: books, pending, error } = useAsyncData('books', () => $fetch(`${config.public.baseUrl}/biblioteca`));
+import { useLibraryStore } from '@/store/library';
+const libraryStore = useLibraryStore();
+const { books } = storeToRefs(libraryStore);
+const { pending, error } = await libraryStore.listBooks();
 
 const search = ref('');
 const cachedBooks = [];

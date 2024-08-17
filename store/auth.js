@@ -10,33 +10,24 @@ export const useMyAuthStore = defineStore('myAuthStore', ()=>{
   const roles = ref([])
 
   async function getRoles() {
-    const response = await fetch(`${config.public.baseUrl}/token/roles`, {
-      method: 'get',
-      headers: {
-         'Content-Type': 'application/json',
-         'Authorization': `Bearer ${useCookie('token').value}`,
-        },
-    });
-    const status = response.status;
-    switch (status) {
-      case 200:
-          const data = await response.json();
-          roles.value = data;
-          return data;
-      case 204:
-        return [];
-      default:
-        break;
-    }
+    //get roles from cookie
+    const rolesCookie = useCookie('roles');
+    roles.value = rolesCookie.value || [];
+    return roles.value;
+  }
 
+  async function setRoles(role){
+    const rolesCookie = useCookie('roles');
+    rolesCookie.value = role;
+    roles.value = rolesCookie.value || [];
   }
 
   async function login ({ email, password }){
-    const { data, pending, error } = await useFetch(`${config.public.baseUrl}/usuario/login`, {
+    const { data, pending, error } = await useFetch(`${config.public.baseUrl}/auth/email/login`, {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: {
-        username: email,
+        email,
         password,
       },
     });
@@ -46,9 +37,9 @@ export const useMyAuthStore = defineStore('myAuthStore', ()=>{
       const token = useCookie('token', {
         maxAge: 60 * 60 * 24, // 1 day
       }); // useCookie new hook in nuxt 3
-      token.value = data?.value?.access_token; // set token to cookie
+      token.value = data?.value?.token; // set token to cookie
       this.authenticated = true; // set authenticated  state value to true
-      await getRoles();
+      await setRoles(data?.value?.user?.role?.name);
     }
     if(error) {
       console.log('Email ou senha inválidos');
@@ -58,9 +49,10 @@ export const useMyAuthStore = defineStore('myAuthStore', ()=>{
   };
 
   function logout() {
-    const token = useCookie('token'); // useCookie new hook in nuxt 3
-    token.value = null; // set token to cookie
-    authenticated.value = false; // set authenticated  state value to true
+    const token = useCookie('token');
+    token.value = null;
+    authenticated.value = false;
+    roles.value = [];
   }
 
   const close = () => {

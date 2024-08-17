@@ -6,16 +6,16 @@ export const useAttendanceStore = defineStore('attendance', () => {
   const participants = ref([]);
   const selectedParticipants = ref([]);
 
-  const createAttendance = async (participante_id, evento_id) => {
+  const createAttendance = async (participante, evento) => {
     console.log({
-      participante_id,
-      evento_id,
+      participante,
+      evento,
     });
     const body = {
-      evento_id,
-      participante_id,
+      evento,
+      participante,
     };
-    const response = await fetch(`${config.public.baseUrl}/lista-de-presenca`, {
+    const response = await fetch(`${config.public.baseUrl}/attendances`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ export const useAttendanceStore = defineStore('attendance', () => {
   };
 
   const listAttendance = async (query) => {
-    const response = await fetch(`${config.public.baseUrl}/lista-de-presenca?${query}`, {
+    const response = await fetch(`${config.public.baseUrl}/attendances?${query}`, {
       headers: {
         Authorization: `Bearer ${useCookie('token').value}`,
       },
@@ -37,7 +37,7 @@ export const useAttendanceStore = defineStore('attendance', () => {
   };
 
   const deleteAttendance = async (id) => {
-    await fetch(`${config.public.baseUrl}/lista-de-presenca/deletar/${id}`, {
+    await fetch(`${config.public.baseUrl}/attendances/deletar/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${useCookie('token').value}`,
@@ -47,8 +47,9 @@ export const useAttendanceStore = defineStore('attendance', () => {
     attendances.value = nonDeletedAttendances;
   };
 
+  //NOT USED
   const createParticipant = async (body) => {
-    const response = await fetch(`${config.public.baseUrl}/lista-de-presenca/participantes`, {
+    const response = await fetch(`${config.public.baseUrl}/attendances/participants`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -59,9 +60,10 @@ export const useAttendanceStore = defineStore('attendance', () => {
     return response;
   };
 
+  //NOT USED
   const updateParticipant = async (body) => {
     const { id, ...request } = body;
-    const response = await fetch(`${config.public.baseUrl}/lista-de-presenca/participantes/${id}`, {
+    const response = await fetch(`${config.public.baseUrl}/attendances/participants/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -73,28 +75,29 @@ export const useAttendanceStore = defineStore('attendance', () => {
   };
 
   const listParticipants = async (query = '') => {
-    const response = await fetch(`${config.public.baseUrl}/lista-de-presenca/participantes?${query}`, {
+    const response = await fetch(`${config.public.baseUrl}/attendances/participants?limit=1000${query ? `&${query}` : ''}`, {
       headers: {
         Authorization: `Bearer ${useCookie('token').value}`,
-      },
+      },  
     });
-    participants.value = await response.json();
+    const { data } = await response.json();
+    participants.value = data;
     return participants.value;
   };
 
   const listAllChecked = async (evento_id) => {
-    const response = await fetch(`${config.public.baseUrl}/lista-de-presenca/?evento_id=${evento_id}`, {
+    const response = await fetch(`${config.public.baseUrl}/attendances/?evento=${evento_id}`, {
       headers: {
         Authorization: `Bearer ${useCookie('token').value}`,
       },
     });
-    const json = await response.json();
-    console.log('Ue', json);
+    const { data } = await response.json();
+    console.log('Ue', data);
 
-    selectedParticipants.value = json.map((at) => {
-      const name = participants.value.find((p) => p.id === at.participante_id).nome;
+    selectedParticipants.value = data.map((at) => {
+      const name = participants.value.find((p) => p.id === at.participante).nome;
       return {
-        id: at.participante_id,
+        id: at.participante,
         name,
       };
     });
