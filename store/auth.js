@@ -10,7 +10,7 @@ export const useMyAuthStore = defineStore('myAuthStore', () => {
   const roles = ref([]);
 
   async function getRoles() {
-    const response = await fetch(`${config.public.baseUrl}/token/roles`, {
+    const response = await fetch(`${config.public.baseUrl}/auth/me`, {
       method: 'get',
       headers: {
         'Content-Type': 'application/json',
@@ -21,21 +21,24 @@ export const useMyAuthStore = defineStore('myAuthStore', () => {
     switch (status) {
       case 200:
         const data = await response.json();
-        roles.value = data;
+        roles.value = [data.role.id];
         return data;
       case 204:
         return [];
+      case 401:
+        await refreshToken();
+        break;
       default:
         break;
     }
   }
 
   async function login({ email, password }) {
-    const { data, pending, error } = await useFetch(`${config.public.baseUrl}/usuario/login`, {
+    const { data, pending, error } = await useFetch(`${config.public.baseUrl}/auth/email/login`, {
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       body: {
-        username: email,
+        email: email,
         password,
       },
     });
@@ -43,9 +46,14 @@ export const useMyAuthStore = defineStore('myAuthStore', () => {
 
     if (data.value) {
       const token = useCookie('token', {
-        maxAge: 60 * 60 * 24, // 1 day
+        maxAge: 60 * 15, // 15 minutes
       }); // useCookie new hook in nuxt 3
-      token.value = data?.value?.access_token; // set token to cookie
+      token.value = data?.value?.token; // set token to cookie
+      const refreshToken = useCookie('refreshToken', {
+        maxAge: 60 * 60 * 24 * 30, // 30 days
+      });
+      refreshToken.value = data?.value?.refreshToken; // set refresh token to cookie
+
       this.authenticated = true; // set authenticated  state value to true
       wrong_credentials.value = false;
       await getRoles();
@@ -56,6 +64,25 @@ export const useMyAuthStore = defineStore('myAuthStore', () => {
     }
     console.log('wrong', wrong_credentials.value);
     if (!wrong_credentials.value) close();
+  }
+
+  async function refreshToken() {
+    const { data, pending, error } = await useFetch(`${config.public.baseUrl}/auth/refresh`, {
+      method: 'post',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${useCookie('refreshToken').value}` },
+    });
+    if (data.value) {
+      const token = useCookie('token', {
+        maxAge: 60 * 15, // 1 day
+      }); // useCookie new hook in nuxt 3
+      token.value = data?.value?.token; // set token to cookie
+    }
+    if (error.value) {
+      console.log('Erro ao atualizar token', error);
+    }
+    if (!error.value) {
+      await getRoles();
+    }
   }
 
   function logout() {

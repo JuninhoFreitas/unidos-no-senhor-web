@@ -2,7 +2,7 @@
 definePageMeta({
   layout: "landing",
   middleware: "auth",
-  roles: ['admin'],
+  roles: [1],
   isProtected: true,
 });
 useHead({

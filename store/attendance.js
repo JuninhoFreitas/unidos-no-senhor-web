@@ -12,10 +12,10 @@ export const useAttendanceStore = defineStore('attendance', () => {
       evento_id,
     });
     const body = {
-      evento_id,
-      participante_id,
+      evento: evento_id,
+      participante: participante_id,
     };
-    const response = await fetch(`${config.public.baseUrl}/lista-de-presenca`, {
+    const response = await fetch(`${config.public.baseUrl}/attendances`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -23,21 +23,21 @@ export const useAttendanceStore = defineStore('attendance', () => {
       },
       body: JSON.stringify(body),
     });
-    return response;
+    return response.json().data;
   };
 
   const listAttendance = async (query) => {
-    const response = await fetch(`${config.public.baseUrl}/lista-de-presenca?${query}`, {
+    const response = await fetch(`${config.public.baseUrl}/attendances?${query}`, {
       headers: {
         Authorization: `Bearer ${useCookie('token').value}`,
       },
     });
-    attendances.value = await response.json();
+    attendances.value = await response.json().data;
     return attendances.value;
   };
 
   const deleteAttendance = async (id) => {
-    await fetch(`${config.public.baseUrl}/lista-de-presenca/deletar/${id}`, {
+    await fetch(`${config.public.baseUrl}/attendances/deletar/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${useCookie('token').value}`,
@@ -48,7 +48,7 @@ export const useAttendanceStore = defineStore('attendance', () => {
   };
 
   const createParticipant = async (body) => {
-    const response = await fetch(`${config.public.baseUrl}/lista-de-presenca/participantes`, {
+    const response = await fetch(`${config.public.baseUrl}/attendances/participantes`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ export const useAttendanceStore = defineStore('attendance', () => {
 
   const updateParticipant = async (body) => {
     const { id, ...request } = body;
-    const response = await fetch(`${config.public.baseUrl}/lista-de-presenca/participantes/${id}`, {
+    const response = await fetch(`${config.public.baseUrl}/attendances/participantes/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -73,28 +73,33 @@ export const useAttendanceStore = defineStore('attendance', () => {
   };
 
   const listParticipants = async (query = '') => {
-    const response = await fetch(`${config.public.baseUrl}/lista-de-presenca/participantes?${query}`, {
-      headers: {
-        Authorization: `Bearer ${useCookie('token').value}`,
-      },
-    });
-    participants.value = await response.json();
-    return participants.value;
-  };
-
-  const listAllChecked = async (evento_id) => {
-    const response = await fetch(`${config.public.baseUrl}/lista-de-presenca/?evento_id=${evento_id}`, {
+    const response = await fetch(`${config.public.baseUrl}/attendances/participants?page=1&limit=500&offset=0`, {
       headers: {
         Authorization: `Bearer ${useCookie('token').value}`,
       },
     });
     const json = await response.json();
-    console.log('Ue', json);
+    const data = json.data; 
+    participants.value = data;
+    return participants.value;
+  };
 
-    selectedParticipants.value = json.map((at) => {
-      const name = participants.value.find((p) => p.id === at.participante_id).nome;
+  const listAllChecked = async (evento_id) => {
+    const response = await fetch(`${config.public.baseUrl}/attendances?evento=${evento_id}`, {
+      headers: {
+        Authorization: `Bearer ${useCookie('token').value}`,
+      },
+    });
+    const json = await response.json();
+    const data = json.data;
+    console.log('Ue', data);
+
+    selectedParticipants.value = data.map((at) => {
+      console.log('at', at);
+      console.log('participants', participants.value);
+      const name = participants.value.find((p) => p.membro_id === at.participante).nome;
       return {
-        id: at.participante_id,
+        id: at.participante,
         name,
       };
     });

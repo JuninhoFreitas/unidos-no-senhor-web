@@ -25,6 +25,7 @@ const createAttendance = async () => {
 
 // Função para Filtrar Pessoas
 const select = (person) => {
+  console.log('person', person);
   const index = selectedParticipants.value.findIndex((p) => p.id === person.id);
   if (index === -1) {
     selectedParticipants.value.push(person);
@@ -52,11 +53,21 @@ const filteredRows = computed(() => {
       <UInput v-model="q" placeholder="Filtre Pessoas..." />
       <UButton label="+" class="ml-3" @click="console.log(selectedParticipants)" />
     </div>
-    <div v-for="person in filteredRows" :key="person.id" class="flex justify-between items-center border-b py-2">
-      <span :class="[selectedParticipants.find((p) => p.id === person.id) && 'text-primary-500 dark:text-primary-400']">
+    <div 
+      v-for="person in filteredRows" 
+      :key="person.id" 
+      :class="[
+        'flex justify-between items-center border-b py-2', 
+        selectedParticipants.find((p) => p.id === person.id) ? 'bg-gray-100' : ''
+      ]"
+    >
+      <span :class="[selectedParticipants.find((p) => p.id === person.id) && 'text-black dark:text-primary-400']">
         {{ person.nome }}
       </span>
-      <UButton @click="select(person)">
+      <UButton 
+        @click="select(person)" 
+        :style="{ backgroundColor: selectedParticipants.find((p) => p.id === person.id) ? 'red' : '' }"
+      >
         {{ selectedParticipants.find((p) => p.id === person.id) ? 'Desmarcar' : 'Presente' }}
       </UButton>
     </div>
@@ -72,15 +83,16 @@ const filteredRows = computed(() => {
       </UAlert>
     </UModal>
     <UButton
-      class="flex items-end justify-center mt-5 mx-auto"
+      class="flex items-end justify-center mt-5 mx-auto fixed bottom-0 left-0 right-0"
       color="primary"
-      variant="outline"
+      
       icon="i-heroicons-plus-20-solid"
       @click="createAttendance"
     >
       Confirmar Presença
     </UButton>
   </div>
+  <div class="h-16"></div>
 </template>
 
 <style></style>

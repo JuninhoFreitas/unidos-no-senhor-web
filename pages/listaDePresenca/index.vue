@@ -2,7 +2,7 @@
 definePageMeta({
   layout: 'app',
   middleware: 'auth',
-  roles: ['admin', 'obreiro'],
+  roles: [1],
   isProtected: true,
 });
 useHead({

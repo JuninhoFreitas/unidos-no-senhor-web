@@ -23,7 +23,7 @@
 definePageMeta({
   layout: 'landing',
   middleware: 'auth',
-  roles: ['admin'],
+  roles: [1],
   isProtected: true,
 });
 useHead({
@@ -70,11 +70,12 @@ const items = (row) => [
 ];
 
 const filteredRows = computed(() => {
+  console.log('members', members.value.data);
   if (!q.value) {
-    return members.value;
+    return members.value.data;
   }
 
-  return members.value.filter((person) => {
+  return members.value.data.filter((person) => {
     return Object.values(person).some((value) => {
       return String(value).toLowerCase().includes(q.value.toLowerCase());
     });
