@@ -5,7 +5,7 @@ export const useLibraryStore = defineStore('biblioteca', () => {
   const books = ref([]);
   const createBook = async (body) => {
     body.anoDeImpressao = body.anoDeImpressao.toString();
-    const response = await fetch(`${config.public.baseUrl}/biblioteca`, {
+    const response = await fetch(`${config.public.baseUrl}/libraries`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -17,7 +17,7 @@ export const useLibraryStore = defineStore('biblioteca', () => {
   };
 
   const listBooks = async () => {
-    const response = await fetch(`${config.public.baseUrl}/biblioteca`);
+    const response = await fetch(`${config.public.baseUrl}/libraries`);
     books.value = await response.json();
     return books.value;
   };
@@ -25,7 +25,7 @@ export const useLibraryStore = defineStore('biblioteca', () => {
   const updateBook = async (body) => {
     body.anoDeImpressao = body.anoDeImpressao.toString();
     const { id, ...request } = body;
-    const response = await fetch(`${config.public.baseUrl}/biblioteca/${id}`, {
+    const response = await fetch(`${config.public.baseUrl}/libraries/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ export const useLibraryStore = defineStore('biblioteca', () => {
   }
 
   const deleteBook = async (id) => {
-    await fetch(`${config.public.baseUrl}/biblioteca/${id}`, {
+    await fetch(`${config.public.baseUrl}/libraries/${id}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${useCookie('token').value}`,
