@@ -67,18 +67,22 @@ export const useMyAuthStore = defineStore('myAuthStore', () => {
   }
 
   async function refreshToken() {
+    console.log('[refreshToken]: trying to refresh token using refresh token', useCookie('refreshToken').value);
     const { data, pending, error } = await useFetch(`${config.public.baseUrl}/auth/refresh`, {
       method: 'post',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${useCookie('refreshToken').value}` },
     });
+    console.log('[refreshToken]: token refreshed', data.value);
     if (data.value) {
+      console.log('[refreshToken]: token refreshed', data.value);
       const token = useCookie('token', {
-        maxAge: 60 * 15, // 1 day
+        maxAge: 60 * 1, // 15 minutes
       }); // useCookie new hook in nuxt 3
       token.value = data?.value?.token; // set token to cookie
+      console.log('[refreshToken]: token refreshed', token.value);
     }
     if (error.value) {
-      console.log('Erro ao atualizar token', error);
+      console.log('[refreshToken]: error', error);
     }
     if (!error.value) {
       await getRoles();
@@ -93,7 +97,8 @@ export const useMyAuthStore = defineStore('myAuthStore', () => {
 
   const close = () => {
     show_login_window.value = false;
+    location.reload();
   };
 
-  return { login, show_login_window, authenticated, user, close, wrong_credentials, loading, logout, getRoles, roles };
+  return { login, show_login_window, authenticated, user, close, wrong_credentials, loading, logout, getRoles, roles, refreshToken };
 });

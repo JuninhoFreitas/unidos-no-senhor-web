@@ -14,7 +14,9 @@ async function submit() {
     password: password.value,
   };
   await storeAuth.login(payload);
-  if (!wrong_credentials) close();
+  if (!wrong_credentials){
+    storeAuth.close();
+  }
 }
 </script>
 <template>

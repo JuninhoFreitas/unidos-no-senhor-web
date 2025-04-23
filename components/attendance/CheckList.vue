@@ -12,7 +12,23 @@ await attendanceStore.listParticipants();
 
 await attendanceStore.listAllChecked(selectedEvent.value.id);
 
+// Estado Atual	Texto no Botão	Cor do Botão (Hex Exemplo)	Significado da Cor
+// Não Marcado	"Não Marcado" ou "Marcar"	Cinza (#808080)	Neutro / Ação Pendente
+// Presente	"Presente"	Verde (#28a745)	Confirmação / Sim
+// Ausente	"Ausente"	Vermelho (#dc3545)	Negação / Não
+const statesMap = {
+  'present': {
+    color: 'bg-green-500',
+    text: 'Presente'
+  },
+  'absent': {
+    color: 'bg-red-500',
+    text: 'Ausente'
+  }
+}
 const q = ref('');
+const sortByPresence = ref(true); // Add this line to track sorting method
+const sortAscending = ref(true);
 
 // Função para Atualizar a Lista de Presença
 const createAttendance = async () => {
@@ -44,6 +60,30 @@ const filteredRows = computed(() => {
     });
   });
 });
+
+const sortFilteredRowsByName = computed(() => {
+  const sorted = filteredRows.value.sort((a, b) => {
+    const comparison = a.nome.localeCompare(b.nome);
+    return sortAscending.value ? comparison : -comparison;
+  });
+  console.log('sorted', sorted);
+  return sorted;
+})
+const sortFilteredRowsByPresence = computed(() => {
+  const presence = selectedParticipants.value.map((p) => p.id);
+  const sorted = filteredRows.value.sort((a, b) => {
+    const comparison = presence.indexOf(a.id) - presence.indexOf(b.id);
+    return sortAscending.value ? comparison : -comparison;
+  });
+  console.log('sorted', sorted);
+  return sorted;
+})
+
+// Add this computed property to determine which sorting to use
+const sortedRows = computed(() => {
+  return sortByPresence.value ? sortFilteredRowsByPresence.value : sortFilteredRowsByName.value;
+})
+
 </script>
 
 <template>
@@ -51,10 +91,24 @@ const filteredRows = computed(() => {
     <h1 class="text-3xl font-bold text-center mt-5">{{ selectedEvent.nome }}</h1>
     <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
       <UInput v-model="q" placeholder="Filtre Pessoas..." />
-      <UButton label="+" class="ml-3" @click="console.log(selectedParticipants)" />
+      <div class="flex items-center ml-3">
+        <UButton 
+          :label="sortByPresence ? 'Ordenar por Presença' : 'Ordenar por Nome'" 
+          class="mr-2"
+          @click="sortByPresence = !sortByPresence" 
+          :color="sortByPresence ? 'gray' : 'gray'"
+        />
+        <UButton
+          :icon="sortAscending ? 'i-heroicons-arrow-up-20-solid' : 'i-heroicons-arrow-down-20-solid'"
+          variant="ghost"
+          class="px-2"
+          @click="sortAscending = !sortAscending"
+        />
+      </div>
     </div>
-    <div 
-      v-for="person in filteredRows" 
+    
+    <div
+      v-for="person in sortedRows" 
       :key="person.id" 
       :class="[
         'flex justify-between items-center border-b py-2', 
@@ -65,10 +119,11 @@ const filteredRows = computed(() => {
         {{ person.nome }}
       </span>
       <UButton 
+        :class="[selectedParticipants.find((p) => p.id === person.id) ? statesMap.present.color : statesMap.absent.color]"
         @click="select(person)" 
-        :style="{ backgroundColor: selectedParticipants.find((p) => p.id === person.id) ? 'red' : '' }"
+        :style="{ backgroundColor: selectedParticipants.find((p) => p.id === person.id) ? statesMap.present.color : statesMap.absent.color }"
       >
-        {{ selectedParticipants.find((p) => p.id === person.id) ? 'Desmarcar' : 'Presente' }}
+        {{ selectedParticipants.find((p) => p.id === person.id) ? statesMap.present.text : statesMap.absent.text }}
       </UButton>
     </div>
     <UModal v-model="opened.dialogs.updatedParticipant">

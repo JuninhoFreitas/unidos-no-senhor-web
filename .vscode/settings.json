@@ -20,5 +20,7 @@
     "**/.svn/**",
     "**/yarn.lock",
     "**/@generated/**"
-  ]
+  ],
+  "window.autoDetectColorScheme": false,
+  "workbench.colorTheme": "Default Dark Modern"
 }

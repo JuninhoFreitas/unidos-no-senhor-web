@@ -1,6 +1,9 @@
 <script setup>
 definePageMeta({
   layout: 'landing',
+  middleware: 'auth',
+  roles: [1,''],
+  isProtected: false,
 });
 useHead({
   title: 'Unidos no Senhor | Sobre Nós',

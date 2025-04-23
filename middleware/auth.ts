@@ -1,4 +1,3 @@
-import { objectEntries } from '@vueuse/core';
 import { useMyAuthStore } from '../store/auth';
 
 export default defineNuxtRouteMiddleware(async (to) => {
@@ -6,6 +5,12 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const store = useMyAuthStore();
   const { authenticated, roles } = storeToRefs(store); // make authenticated state reactive
   const token = useCookie('token'); // get token from cookies
+  if(!token.value){
+    await store.refreshToken();
+    if (!token.value) {
+      store.logout(); // clear the state
+    }
+  }
   if (token.value) {
     // check if value exists
     authenticated.value = true; // update the state to authenticated
@@ -25,14 +30,19 @@ export default defineNuxtRouteMiddleware(async (to) => {
   // to.meta.roles is an array of strings with the roles that can access the route
 
   // if token exists and url is /login redirect to homepage
-  if (token.value && to?.name === 'login') {
+  if (to.meta.isProtected && token.value && to?.name === 'login') {
+    await store.refreshToken();
     return navigateTo('/');
   }
 
   // if token doesn't exist redirect to log in
-  if (!token.value && to?.name !== 'login') {
-    store.logout(); // clear the state
-    abortNavigation();
-    return navigateTo('/');
+  if (to.meta.isProtected && !token.value && to?.name !== 'login') {
+    // try to refresh token
+    await store.refreshToken();
+    if (!token.value) {
+      store.logout(); // clear the state
+      abortNavigation();
+      return navigateTo('/');
+    }
   }
 });

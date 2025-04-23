@@ -13,12 +13,14 @@ export const useLibraryStore = defineStore('biblioteca', () => {
       },
       body: JSON.stringify(body),
     });
-    return response;
+    const json = await response.json();
+    return json.data;
   };
 
   const listBooks = async () => {
     const response = await fetch(`${config.public.baseUrl}/libraries`);
-    books.value = await response.json();
+    const json = await response.json();
+    books.value = json.data;
     return books.value;
   };
 
@@ -33,7 +35,8 @@ export const useLibraryStore = defineStore('biblioteca', () => {
       },
       body: JSON.stringify(request),
     });
-    return response;
+    const json = await response.json();
+    return json.data;
   }
 
   const deleteBook = async (id) => {
