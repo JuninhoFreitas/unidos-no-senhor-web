@@ -10,7 +10,7 @@ import { useDebounce } from '@vueuse/core';
 const config = useRuntimeConfig();
 const authenticated = useCookie('token')?.value ? true : false;
 
-const { data: books, pending, error } = useAsyncData('books', () => $fetch(`${config.public.baseUrl}/biblioteca`));
+const { data: books, pending, error } = useAsyncData('books', () => $fetch(`${config.public.baseUrl}/libraries`));
 
 const search = ref('');
 const cachedBooks = [];
