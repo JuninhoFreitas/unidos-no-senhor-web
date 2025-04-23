@@ -8,7 +8,7 @@ const attendanceStore = useAttendanceStore();
 const { participants, selectedParticipants } = storeToRefs(attendanceStore);
 const openedStore = useOpenedStore();
 const { opened } = storeToRefs(openedStore);
-attendanceStore.listParticipants();
+await attendanceStore.listParticipants();
 
 await attendanceStore.listAllChecked(selectedEvent.value.id);
 
