@@ -4,14 +4,14 @@ import { useOpenedStore } from '~/store/openeds';
 const openedStore = useOpenedStore();
 const eventsStore = useEventsStore();
 const { events, selectedEvent } = storeToRefs(eventsStore);
+const { attendancesByEvent } = storeToRefs(attendanceStore);
 const { opened } = storeToRefs(openedStore);
-await eventsStore.listEvents();
-const selectEvent = async (event) => {
+await attendanceStore.listAttendancesByEvent(selectedEvent.value.id);
+const selectEvent = (event) => {
   selectedEvent.value = event;
   console.log('Evento selecionado: ', selectedEvent.value);
   opened.value.windows.listEvents = false;
-  await attendanceStore.listAttendancesByEvent(selectedEvent.value.id);
-  opened.value.windows.listAttendances = true;
+  opened.value.windows.checklist = true;
 };
 </script>
 <template>
@@ -22,7 +22,7 @@ const selectEvent = async (event) => {
     -->
     <UCard class="overflow-y-auto" style="height: 70vh">
       <div class="flex-row max-h-fit">
-        <div v-for="event in events" :key="event.id" class="max-w-full p-4">
+        <div v-for="attendance in attendancesByEvent" :key="attendance.id" class="max-w-full p-4">
           <UCard class="z-10">
             <UIcon name="i-heroicons-trash" class="float-right hover:bg-red-500" @click="eventsStore.deleteEvent(event.id)" />
             <div @click="selectEvent(event)">

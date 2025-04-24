@@ -14,6 +14,7 @@ export const useOpenedStore = defineStore('opened', () => {
       addEvent: false,
       listEvents: true,
       checklist: false,
+      listAttendances: false,
     },
   });
 

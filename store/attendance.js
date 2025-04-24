@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 export const useAttendanceStore = defineStore('attendance', () => {
   const config = useRuntimeConfig();
   const attendances = ref([]);
+  const attendancesByEvent = ref([]);
   const participants = ref([]);
   const selectedParticipants = ref([]);
 
@@ -24,6 +25,21 @@ export const useAttendanceStore = defineStore('attendance', () => {
       body: JSON.stringify(body),
     });
     return response.json().data;
+  };
+
+  const listAttendancesByEvent = async (evento_id) => {
+    const response = await fetch(`${config.public.baseUrl}/attendances/unique-code`, {
+      headers: {
+        Authorization: `Bearer ${useCookie('token').value}`,
+      },
+    });
+    const json = await response.json();
+    const data = json.data;
+    const uniqueCode = data.filter((item) => item.evento === evento_id);
+    attendancesByEvent.value = uniqueCode;
+    console.log('[attendancesByEvent] filtered', attendancesByEvent.value);
+    return attendancesByEvent.value;
+
   };
 
   const listAttendance = async (query) => {
@@ -117,5 +133,6 @@ export const useAttendanceStore = defineStore('attendance', () => {
     attendances,
     participants,
     selectedParticipants,
+    listAttendancesByEvent,
   };
 });

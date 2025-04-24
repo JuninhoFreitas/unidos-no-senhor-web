@@ -27,6 +27,9 @@ const { opened } = storeToRefs(openedStore);
       <AttendanceCheckList />
     </div>
 
+    <div v-if="opened.windows.listAttendances">
+      <AttendanceListAttendances />
+    </div>
     <div v-if="opened.windows.listEvents">
       <div class="overflow-y-auto h-1/2">
         <AttendanceEventList />
