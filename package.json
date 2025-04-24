@@ -5,13 +5,28 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "dev:pwa": "nuxi dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "start": "npx serve .output/public"
+    "start": "npx serve .output/public",
+    "nuxi:dev": "nuxi dev",
+    "nuxi:dev-sw": "SW=true nuxi dev",
+    "nuxi:build": "nuxi build",
+    "nuxi:build-sw": "SW=true nuxi build",
+    "nuxi:generate": "nuxi generate",
+    "nr:dev": "nuxi dev playground",
+    "nr:dev:generate": "nuxi generate playground",
+    "nr:dev:generate:netlify": "NITRO_PRESET=netlify nuxi generate playground",
+    "nr:dev:generate:vercel": "NITRO_PRESET=vercel nuxi generate playground",
+    "nr:dev:build": "nuxi build playground",
+    "nr:dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
+    "nr:dev:preview:build": "nr dev:build && node playground/.output/server/index.mjs",
+    "nr:dev:preview:generate": "nr dev:generate && serve playground/dist"
   },
   "devDependencies": {
     "@nuxtjs/dotenv": "^1.4.2",
+    "@nuxtjs/pwa": "^3.3.5",
     "@tailwindcss/typography": "^0.5.10",
     "@vueuse/core": "^10.7.2",
     "autoprefixer": "^10.4.16",
@@ -25,10 +40,11 @@
     "@nuxt/ui": "^2.13.0",
     "@pinia/nuxt": "^0.5.1",
     "@types/moment": "^2.13.0",
+    "@vite-pwa/nuxt": "^1.0.0",
     "moment": "^2.30.1",
+    "nuxt": "^3.9.0",
     "nuxt-storage": "^1.2.2",
-    "pinia": "^2.1.7",
-    "nuxt": "^3.9.0"
+    "pinia": "^2.1.7"
   },
   "packageManager": "pnpm@9.1.1+sha512.14e915759c11f77eac07faba4d019c193ec8637229e62ec99eefb7cf3c3b75c64447882b7c485142451ee3a6b408059cdfb7b7fa0341b975f12d0f7629c71195"
 }
