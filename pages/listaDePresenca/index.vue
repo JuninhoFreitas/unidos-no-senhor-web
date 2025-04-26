@@ -18,9 +18,11 @@ const { opened } = storeToRefs(openedStore);
     <div class="mt-5">
       <button
         @click="opened.windows.checklist ? (opened.windows.checklist = false, opened.windows.listEvents = true) : $router.back()"
-        class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 px-5 py-2.5 bg-white border-2 border-black hover:bg-gray-100 text-black absolute top-1 left-1"
-      >
-        Voltar
+        class="rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200 px-3 py-1.5 bg-white border-2 border-black hover:bg-gray-100 text-black absolute top-1 left-1 sm:px-5 sm:py-2.5 sm:w-auto sm:h-auto">
+        <span class="center hidden sm:inline">Voltar</span>
+        <span class="center sm:hidden">
+          <UIcon name="i-heroicons-arrow-left" />
+        </span>
       </button>
     </div>
     <div v-if="opened.windows.checklist">
@@ -29,6 +31,9 @@ const { opened } = storeToRefs(openedStore);
 
     <div v-if="opened.windows.listAttendances">
       <AttendanceListAttendances />
+    </div>
+    <div v-if="opened.windows.selectParticipantsToEvent">
+      <AttendanceParticipantsList />
     </div>
     <div v-if="opened.windows.listEvents">
       <div class="overflow-y-auto h-1/2">

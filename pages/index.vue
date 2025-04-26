@@ -11,10 +11,6 @@ const pwa = usePWA()
 <template>
   <LandingContainer>
     <ClientOnly>
-      PWA Installed: {{ $pwa?.isPWAInstalled }}
-      PWA Installed: {{ pwa?.isPWAInstalled }}
-    </ClientOnly>
-        <ClientOnly>
       <div
         v-if="$pwa?.offlineReady || $pwa?.needRefresh"
         class="pwa-toast"
@@ -38,28 +34,11 @@ const pwa = usePWA()
           Close
         </button>
       </div>
-      <div
-        v-if="$pwa?.showInstallPrompt && !$pwa?.offlineReady && !$pwa?.needRefresh"
-        class="pwa-toast"
-        role="alert"
-      >
-        <div class="message">
-          <span>
-            Install PWA
-          </span>
-        </div>
-        <button @click="$pwa.install()">
-          Install
-        </button>
-        <button @click="$pwa.cancelInstall()">
-          Cancel
-        </button>
-      </div>
+      <PWAInstallPrompt />
     </ClientOnly>
     <LandingHero></LandingHero>
   </LandingContainer>
 </template>
-
 
 <style>
 .pwa-toast {

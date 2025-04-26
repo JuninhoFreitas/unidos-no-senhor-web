@@ -2,15 +2,20 @@
 import { useAttendanceStore } from '~/store/attendance';
 import { useEventsStore } from '~/store/events';
 import { useOpenedStore } from '~/store/openeds';
+import { useParticipantStore } from '~/store/participant';
 const eventsStore = useEventsStore();
 const { selectedEvent } = storeToRefs(eventsStore);
 const attendanceStore = useAttendanceStore();
-const { participants, selectedParticipants } = storeToRefs(attendanceStore);
+const { selectedParticipants, selectedAttendance } = storeToRefs(attendanceStore);
 const openedStore = useOpenedStore();
 const { opened } = storeToRefs(openedStore);
-await attendanceStore.listParticipants();
+const participantStore = useParticipantStore();
+const { allowedParticipants } = storeToRefs(participantStore);
+await participantStore.listAllowedParticipants({ eventId: selectedEvent.value.id });
+const { participants } = storeToRefs(attendanceStore);
+participants.value = allowedParticipants.value;
 
-await attendanceStore.listAllChecked(selectedEvent.value.id);
+await attendanceStore.listAllChecked(selectedAttendance.value.code);
 
 // Estado Atual	Texto no Botão	Cor do Botão (Hex Exemplo)	Significado da Cor
 // Não Marcado	"Não Marcado" ou "Marcar"	Cinza (#808080)	Neutro / Ação Pendente
@@ -34,15 +39,20 @@ const sortAscending = ref(true);
 const createAttendance = async () => {
   opened.value.dialogs.updatedParticipant = true;
   if (selectedParticipants.value) {
-    const selectedIds = selectedParticipants.value.map((person) => person.id);
-    await attendanceStore.createAttendance(selectedIds, selectedEvent.value.id);
+    const selectedIds = selectedParticipants.value.map((person) => person.participante);
+    await attendanceStore.createAttendance({
+      participante: selectedIds,
+      evento: selectedAttendance.value.evento,
+      code: selectedAttendance.value.code,
+      date: selectedAttendance.value.date
+    });
   }
 };
 
 // Função para Filtrar Pessoas
 const select = (person) => {
   console.log('person', person);
-  const index = selectedParticipants.value.findIndex((p) => p.id === person.id);
+  const index = selectedParticipants.value.findIndex((p) => p.participante === person.participante);
   if (index === -1) {
     selectedParticipants.value.push(person);
   } else {
@@ -51,10 +61,10 @@ const select = (person) => {
 };
 const filteredRows = computed(() => {
   if (!q.value) {
-    return participants.value;
+    return allowedParticipants.value;
   }
 
-  return participants.value.filter((person) => {
+  return allowedParticipants.value.filter((person) => {
     return Object.values(person).some((value) => {
       return String(value).toLowerCase().includes(q.value.toLowerCase());
     });
@@ -70,9 +80,9 @@ const sortFilteredRowsByName = computed(() => {
   return sorted;
 })
 const sortFilteredRowsByPresence = computed(() => {
-  const presence = selectedParticipants.value.map((p) => p.id);
+  const presence = selectedParticipants.value.map((p) => p.participante);
   const sorted = filteredRows.value.sort((a, b) => {
-    const comparison = presence.indexOf(a.id) - presence.indexOf(b.id);
+    const comparison = presence.indexOf(a.participante) - presence.indexOf(b.participante);
     return sortAscending.value ? comparison : -comparison;
   });
   console.log('sorted', sorted);
@@ -92,58 +102,37 @@ const sortedRows = computed(() => {
     <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
       <UInput v-model="q" placeholder="Filtre Pessoas..." />
       <div class="flex items-center ml-3">
-        <UButton 
-          :label="sortByPresence ? 'Ordenar por Presença' : 'Ordenar por Nome'" 
-          class="mr-2"
-          @click="sortByPresence = !sortByPresence" 
-          :color="sortByPresence ? 'gray' : 'gray'"
-        />
-        <UButton
-          :icon="sortAscending ? 'i-heroicons-arrow-up-20-solid' : 'i-heroicons-arrow-down-20-solid'"
-          variant="ghost"
-          class="px-2"
-          @click="sortAscending = !sortAscending"
-        />
+        <UButton :label="sortByPresence ? 'Ordenar por Presença' : 'Ordenar por Nome'" class="mr-2"
+          @click="sortByPresence = !sortByPresence" :color="sortByPresence ? 'gray' : 'gray'" />
+        <UButton :icon="sortAscending ? 'i-heroicons-arrow-up-20-solid' : 'i-heroicons-arrow-down-20-solid'"
+          variant="ghost" class="px-2" @click="sortAscending = !sortAscending" />
       </div>
     </div>
-    
-    <div
-      v-for="person in sortedRows" 
-      :key="person.id" 
-      :class="[
-        'flex justify-between items-center border-b py-2', 
-        selectedParticipants.find((p) => p.id === person.id) ? 'bg-gray-100' : ''
-      ]"
-    >
-      <span :class="[selectedParticipants.find((p) => p.id === person.id) && 'text-black dark:text-primary-400']">
-        {{ person.nome }}
+
+    <div v-for="person in sortedRows" :key="person.participante" :class="[
+      'flex justify-between items-center border-b py-2',
+      selectedParticipants.find((p) => p.participante === person.participante) ? 'bg-gray-100' : ''
+    ]">
+      <span
+        :class="[selectedParticipants.find((p) => p.participante === person.participante) && 'text-black dark:text-primary-400']">
+        {{ person.participant_nome }}
       </span>
-      <UButton 
-        :class="[selectedParticipants.find((p) => p.id === person.id) ? statesMap.present.color : statesMap.absent.color]"
-        @click="select(person)" 
-        :style="{ backgroundColor: selectedParticipants.find((p) => p.id === person.id) ? statesMap.present.color : statesMap.absent.color }"
-      >
-        {{ selectedParticipants.find((p) => p.id === person.id) ? statesMap.present.text : statesMap.absent.text }}
+      <UButton
+        :class="[selectedParticipants.find((p) => p.participante === person.participante) ? statesMap.present.color : statesMap.absent.color]"
+        @click="select(person)"
+        :style="{ backgroundColor: selectedParticipants.find((p) => p.participante === person.participante) ? statesMap.present.color : statesMap.absent.color }">
+        {{selectedParticipants.find((p) => p.participante === person.participante) ? statesMap.present.text :
+          statesMap.absent.text}}
       </UButton>
     </div>
     <UModal v-model="opened.dialogs.updatedParticipant">
       <!-- Create a alert to success -->
-      <UAlert
-        class="text-black"
-        color="black"
-        title="Presenças Salvas"
-        message="Lista de presença atualizada com sucesso"
-        @close="opened.dialogs.updatedParticipant = false"
-      >
+      <UAlert class="text-black" color="black" title="Presenças Salvas"
+        message="Lista de presença atualizada com sucesso" @close="opened.dialogs.updatedParticipant = false">
       </UAlert>
     </UModal>
-    <UButton
-      class="flex items-end justify-center mt-5 mx-auto fixed bottom-0 left-0 right-0"
-      color="primary"
-      
-      icon="i-heroicons-plus-20-solid"
-      @click="createAttendance"
-    >
+    <UButton class="flex items-end justify-center mt-5 mx-auto fixed bottom-0 left-0 right-0" color="primary"
+      icon="i-heroicons-plus-20-solid" @click="createAttendance">
       Confirmar Presença
     </UButton>
   </div>

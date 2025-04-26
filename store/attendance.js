@@ -6,25 +6,32 @@ export const useAttendanceStore = defineStore('attendance', () => {
   const attendancesByEvent = ref([]);
   const participants = ref([]);
   const selectedParticipants = ref([]);
-
-  const createAttendance = async (participante_id, evento_id) => {
-    console.log({
-      participante_id,
-      evento_id,
-    });
+  const selectedAttendance = ref([]);
+  const createAttendance = async ({participante, evento, code, date}) => {
     const body = {
-      evento: evento_id,
-      participante: participante_id,
+      evento,
+      participante,
+      code,
+      date,
     };
-    const response = await fetch(`${config.public.baseUrl}/attendances`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${useCookie('token').value}`,
-      },
-      body: JSON.stringify(body),
-    });
-    return response.json().data;
+    try {
+      const response = await fetch(`${config.public.baseUrl}/attendances`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${useCookie('token').value}`,
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.ok;
+    } catch (error) {
+      console.error('Error creating attendance:', error);
+      return null;
+    }
   };
 
   const listAttendancesByEvent = async (evento_id) => {
@@ -34,8 +41,7 @@ export const useAttendanceStore = defineStore('attendance', () => {
       },
     });
     const json = await response.json();
-    const data = json.data;
-    const uniqueCode = data.filter((item) => item.evento === evento_id);
+    const uniqueCode = json.filter((item) => item.evento === evento_id);
     attendancesByEvent.value = uniqueCode;
     console.log('[attendancesByEvent] filtered', attendancesByEvent.value);
     return attendancesByEvent.value;
@@ -52,19 +58,19 @@ export const useAttendanceStore = defineStore('attendance', () => {
     return attendances.value;
   };
 
-  const deleteAttendance = async (id) => {
-    await fetch(`${config.public.baseUrl}/attendances/deletar/${id}`, {
+  const deleteAttendance = async (code) => {
+    await fetch(`${config.public.baseUrl}/attendances/${code}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${useCookie('token').value}`,
       },
     });
-    const nonDeletedAttendances = attendances.value.filter((attendance) => attendance.id !== id);
-    attendances.value = nonDeletedAttendances;
+    const nonDeletedAttendances = attendancesByEvent.value.filter((attendance) => attendance.code !== code);
+    attendancesByEvent.value = nonDeletedAttendances;
   };
 
   const createParticipant = async (body) => {
-    const response = await fetch(`${config.public.baseUrl}/attendances/participantes`, {
+    const response = await fetch(`${config.public.baseUrl}/attendances/participants`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -100,8 +106,8 @@ export const useAttendanceStore = defineStore('attendance', () => {
     return participants.value;
   };
 
-  const listAllChecked = async (evento_id) => {
-    const response = await fetch(`${config.public.baseUrl}/attendances?evento=${evento_id}`, {
+  const listAllChecked = async (code) => {
+    const response = await fetch(`${config.public.baseUrl}/attendances?code=${code}`, {
       headers: {
         Authorization: `Bearer ${useCookie('token').value}`,
       },
@@ -113,10 +119,14 @@ export const useAttendanceStore = defineStore('attendance', () => {
     selectedParticipants.value = data.map((at) => {
       console.log('at', at);
       console.log('participants', participants.value);
-      const name = participants.value.find((p) => p.membro_id === at.participante).nome;
+      const participante = participants.value.find((p) => p.participante === at.participante);
+      if(!participante?.nome){
+        console.log('participante não encontrado', at);
+      }
+
       return {
-        id: at.participante,
-        name,
+        participante: at.participante,
+        name: participante?.nome,
       };
     });
     return selectedParticipants.value;
@@ -134,5 +144,7 @@ export const useAttendanceStore = defineStore('attendance', () => {
     participants,
     selectedParticipants,
     listAttendancesByEvent,
+    attendancesByEvent,
+    selectedAttendance,
   };
 });

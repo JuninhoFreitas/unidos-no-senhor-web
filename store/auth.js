@@ -46,7 +46,7 @@ export const useMyAuthStore = defineStore('myAuthStore', () => {
 
     if (data.value) {
       const token = useCookie('token', {
-        maxAge: 60 * 15, // 15 minutes
+        maxAge: 60 * 60 * 24, // 24 Hours
       }); // useCookie new hook in nuxt 3
       token.value = data?.value?.token; // set token to cookie
       const refreshToken = useCookie('refreshToken', {
@@ -76,7 +76,7 @@ export const useMyAuthStore = defineStore('myAuthStore', () => {
     if (data.value) {
       console.log('[refreshToken]: token refreshed', data.value);
       const token = useCookie('token', {
-        maxAge: 60 * 1, // 15 minutes
+        maxAge: 60 * 15, // 15 minutes
       }); // useCookie new hook in nuxt 3
       token.value = data?.value?.token; // set token to cookie
       console.log('[refreshToken]: token refreshed', token.value);
