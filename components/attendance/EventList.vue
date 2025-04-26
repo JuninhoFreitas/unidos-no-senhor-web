@@ -30,6 +30,7 @@ const selectEvent = async (event: any) => {
   <div class="max-h-screen">
     <h1 class="text-3xl font-bold text-center mt-5">Eventos</h1>
     <UCard class="overflow-y-auto" style="height: 70vh">
+      <AttendanceCreateParticipant />
       <div class="flex-row max-h-fit">
         <div v-for="event in events" :key="event.id" class="max-w-full p-4">
           <UCard class="z-10">

@@ -93,12 +93,24 @@ const sortFilteredRowsByPresence = computed(() => {
 const sortedRows = computed(() => {
   return sortByPresence.value ? sortFilteredRowsByPresence.value : sortFilteredRowsByName.value;
 })
-
+onMounted(() => {
+  window.addEventListener('resize', () => {
+    windowWidth.value = window.innerWidth;
+  });
+});
+const editParticipants = async () => {
+  opened.value.windows.listEvents = false;
+  opened.value.windows.listAttendances = false;
+  opened.value.windows.checklist = false;
+  opened.value.windows.selectParticipantsToEvent = true;
+}
+const windowWidth = ref(window.innerWidth);
 </script>
 
 <template>
   <div>
     <h1 class="text-3xl font-bold text-center mt-5">{{ selectedEvent.nome }}</h1>
+
     <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
       <UInput v-model="q" placeholder="Filtre Pessoas..." />
       <div class="flex items-center ml-3">

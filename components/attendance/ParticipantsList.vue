@@ -19,6 +19,7 @@ const { existingParticipants, allowedParticipants } = storeToRefs(participantSto
 const selectedParticipants: { value: ParticipantType['id'][] } = ref([]);
 const eventId = ref('');
 const allowedParticipantsList = ref([]);
+const listOfIdsAllowedParticipants = ref([]);
 await participantStore.listParticipants();
 
 const allowParticipants = async () => {
@@ -34,10 +35,13 @@ const allowParticipants = async () => {
 onMounted(async () => {
   eventId.value = selectedEvent.value?.id || 'naoselecionado';
   allowedParticipantsList.value = (await participantStore.listAllowedParticipants({ eventId: eventId.value }))
+  console.log('allowedParticipantsList - participantslist', allowedParticipantsList.value);
+  console.log('existingParticipants - participantslist', existingParticipants.value);
+  listOfIdsAllowedParticipants.value = allowedParticipantsList.value.map((participant: any) => participant.participante);
   if (existingParticipants.value.length > 0) {
     existingParticipants.value.forEach((participant: ParticipantType) => {
 
-      if (allowedParticipantsList.value.includes(participant.id)) {
+      if (listOfIdsAllowedParticipants.value.includes(participant.id)) {
         participant.selected = true;
       } else {
         participant.selected = false;

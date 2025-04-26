@@ -6,7 +6,7 @@ const openedStore = useOpenedStore();
 const { opened } = storeToRefs(openedStore);
 const participantStore = useParticipantStore();
 const createParticipantState = reactive({
-    participante: ''
+  participante: ''
 });
 
 const validate = (state: any): FormError[] => {
@@ -20,7 +20,7 @@ async function createParticipant() {
     const response = await participantStore.createParticipant({
       nome: createParticipantState.participante,
     });
-    
+
     if (response) {
       console.log('Participant created successfully:', response);
       opened.value.windows.createParticipant = false;
@@ -38,7 +38,8 @@ const openCreateParticipant = () => {
 
 <template>
   <div>
-    <UButton class="text-4xl p-0 pb-2 px-2" label="Criar Participante" @click="openCreateParticipant" />
+    <UButton class="text-xl self-center ml-auto mr-auto  text-center p-0 pb-2 px-2" label="Criar Participante"
+      @click="openCreateParticipant" />
     <UModal v-model="opened.windows.createParticipant">
       <div class="flex flex-col gap-4 m-5">
         <UForm :validate="validate" :state="createParticipantState" class="space-y-4" @submit="createParticipant">
